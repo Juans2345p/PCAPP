@@ -1,0 +1,26 @@
+# ---------------------------------------------------------------------------
+# Control gestual -> micro:bit por BLE  (Python 3.11 / Fedora Linux)
+#
+# Dependencias de sistema (Fedora, necesarias para OpenCV y Bluetooth):
+#   sudo dnf install libgomp mesa-libGL libglvnd-glx python3.11-devel bluez
+#   sudo systemctl enable --now bluetooth
+#
+# Instalación:
+#   python3.11 -m venv .venv
+#   source .venv/bin/activate
+#   pip install --upgrade pip
+#   pip install -r requirements.txt
+# ---------------------------------------------------------------------------
+
+# Visión por computador
+mediapipe>=0.10.14        # API Tasks (HandLandmarker). Wheel py3 universal >= 1.0
+opencv-python>=4.9        # Captura de webcam + GUI. MediaPipe puede instalar
+                          # opencv-contrib-python (mismo paquete `cv2`): no rompe,
+                          # pero si pip avisa, basta con dejar una sola de las dos.
+numpy>=1.24
+
+# Bluetooth Low Energy (Nordic UART Service)
+bleak>=0.22               # Probado con 0.22.x y 3.x
+
+# Configuración (config/settings.yaml y config/gestures.yaml)
+PyYAML>=6.0

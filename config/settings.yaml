@@ -1,0 +1,40 @@
+# Parámetros de ejecución del control gestual.
+# Las rutas relativas se resuelven desde la raíz del proyecto (PCAPP/).
+
+camera:
+  index: 0
+  width: 640
+  height: 480
+  mirror: true
+
+mediapipe:
+  model_path: "hand_landmarker.task"
+  num_hands: 2
+  detect_conf: 0.6
+  presence_conf: 0.6
+  track_conf: 0.6
+
+ble:
+  # Si device_name tiene un nombre se busca por nombre; si es null se usa address.
+  # En la CLI, --name tiene prioridad sobre --address.
+  address: "E0:BE:3F:2E:C9:8A"
+  device_name: null
+  # UUIDs invertidas a propósito: coinciden con el firmware del micro:bit.
+  write_uuid: "6e400003-b5a3-f393-e0a9-e50e24dcca9e"
+  notify_uuid: "6e400002-b5a3-f393-e0a9-e50e24dcca9e"
+  reconnect_min: 1.0
+  reconnect_max: 15.0
+
+control:
+  max_speed: 255
+  step: 5
+  min_interval: 0.05
+  heartbeat: 1.0
+  lost_grace: 0.15
+  single_hand: "own"      # own | both
+  swap_hands: false
+
+runtime:
+  preview: true
+  debug: false
+  log_level: "INFO"

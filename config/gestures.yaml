@@ -1,0 +1,12 @@
+# Calibración de la métrica de extensión de dedos.
+# rectitud = cuerda / camino sobre MCP -> PIP -> DIP -> TIP.
+calibration:
+  curl_lo: 0.30       # rectitud que corresponde a 0 % de extensión
+  curl_hi: 0.97       # rectitud que corresponde a 100 % de extensión
+  smoothing: 0.35     # alfa del filtro EMA (más alto = más reactivo)
+  deadzone: 0.08      # zona muerta para evitar derivas en reposo
+
+# Con una sola mano visible:
+#   own  -> mueve únicamente su rueda
+#   both -> copia la velocidad a las dos ruedas
+control_mode: "own"
