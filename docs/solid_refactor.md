@@ -39,7 +39,7 @@ tocar el mismo archivo y arrastraba dependencias de hardware.
 
 - Un mensaje BLE por rueda, nunca `R150,L150`.
 - `z` al arrancar, al perder una mano tras `lost_grace` y al salir.
-- EMA por `(lado, dedo)`, reinicio al perder todas las manos.
+- EMA por `(lado, muñeca)`, reinicio al perder todas las manos.
 - Espejo aplicado **antes** de la inferencia.
 - Histéresis sobre la velocidad continua, no sobre la cuantizada.
 - `--single-hand own|both` y tecla `h` para invertir lados.

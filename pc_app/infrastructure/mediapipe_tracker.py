@@ -4,7 +4,6 @@
 from __future__ import annotations
 
 import contextlib
-import math
 import time
 from typing import Any
 
@@ -17,11 +16,6 @@ from mediapipe.tasks.python import vision
 from pc_app.config import Settings
 from pc_app.domain.entities.hand_pose import HandPose
 from pc_app.domain.interfaces.gesture_recognizer import IGestureRecognizer
-
-# Cadenas de landmarks para calcular rectitud (mantenido para compatibilidad).
-INDEX_CHAIN = (5, 6, 7, 8)      # MCP, PIP, DIP, TIP del índice
-MIDDLE_CHAIN = (9, 10, 11, 12)  # MCP, PIP, DIP, TIC del corazón
-
 
 class MediaPipeHandTracker(IGestureRecognizer):
     """Envoltorio de `HandLandmarker` en modo VIDEO."""
@@ -39,7 +33,7 @@ class MediaPipeHandTracker(IGestureRecognizer):
         self._landmarker = vision.HandLandmarker.create_from_options(options)
         self._t0 = time.monotonic()
         self._last_ts = -1
-        # Filtro EMA por mano y dedo: {(side, "index"|"middle"): valor}
+        # Filtro EMA independiente para la muñeca de cada mano.
         self._ema: dict[tuple[str, str], float | None] = {}
 
     def close(self) -> None:
@@ -55,33 +49,10 @@ class MediaPipeHandTracker(IGestureRecognizer):
         self._last_ts = timestamp
         return timestamp
 
-    # -- posición vertical de la mano (nueva lógica) -------------------------
-    def _hand_y_position(self, landmarks: list[Any], width: int, height: int) -> float:
-        """Posición vertical de la mano: 0 = centro, positivo = abajo, negativo = arriba.
-
-        Usa el muñequillo (landmark 0) y normaliza contra el centro de la imagen.
-        El resultado está en el rango aproximado [-1, 1].
-        Se invierte el signo para que el speed sea positivo hacia adelante:
-        - mano más arriba (menor y) → speed positivo (para adelante)
-        - mano más abajo (mayor y) → speed negativo (para atrás)
-        """
-        # Landmark 0 es la muñeca
-        wrist_y = landmarks[0].y * height
-        center_y = height / 2.0
-        # Invertido: positivo = arriba (mano más alta = para adelante)
-        deviation = (center_y - wrist_y) / (center_y + 1e-6)
-        return float(deviation)
-
-    # -- rectitud de dedos (mantenido para compatibilidad, no usado en process) --
     @staticmethod
-    def _straightness(landmarks: list[Any], chain: tuple[int, ...],
-                      width: int, height: int) -> float:
-        """Cuerda / camino de la cadena de falanges -> 0 (curvado) .. 1 (recto)."""
-        points = [(landmarks[i].x * width, landmarks[i].y * height) for i in chain]
-        path = sum(math.dist(points[i], points[i + 1]) for i in range(len(points) - 1))
-        if path < 1e-6:
-            return 0.0
-        return math.dist(points[0], points[-1]) / path
+    def _wrist_position(wrist: Any) -> float:
+        """Devuelve posición vertical normalizada: arriba +1, centro 0, abajo -1."""
+        return float(max(-1.0, min(1.0, 1.0 - 2.0 * float(wrist.y))))
 
     @staticmethod
     def _handedness(result: Any, index: int) -> str:
@@ -97,7 +68,7 @@ class MediaPipeHandTracker(IGestureRecognizer):
                 return str(name)
         return ""
 
-    def _side(self, result: Any, index: int, landmarks: list[Any]) -> str:
+    def _side(self, result: Any, index: int, wrist: Any) -> str:
         """Traduce la etiqueta de MediaPipe a 'L'/'R' teniendo en cuenta el espejo."""
         label = self._handedness(result, index).lower()
         cfg = self._settings
@@ -107,7 +78,7 @@ class MediaPipeHandTracker(IGestureRecognizer):
             side = "R"
         else:
             # Sin etiqueta: en vista espejo la mano izquierda aparece a la izquierda.
-            side = "L" if (landmarks[0].x < 0.5) == cfg.mirror else "R"
+            side = "L" if (wrist.x < 0.5) == cfg.mirror else "R"
 
         # MediaPipe asume que la imagen YA viene espejada (selfie). Si no lo está,
         # hay que invertir; --swap-hands (o la tecla 'h') corrige el resto.
@@ -121,7 +92,6 @@ class MediaPipeHandTracker(IGestureRecognizer):
     # -- API -----------------------------------------------------------------
     def process(self, frame_bgr: np.ndarray) -> dict[str, HandPose]:
         """Procesa un frame BGR. Devuelve {side: HandPose} (vacío si no hay manos)."""
-        height, width = frame_bgr.shape[:2]
         rgb = cv2.cvtColor(frame_bgr, cv2.COLOR_BGR2RGB)
         rgb.flags.writeable = False
         image = mp.Image(image_format=mp.ImageFormat.SRGB, data=rgb)
@@ -134,21 +104,22 @@ class MediaPipeHandTracker(IGestureRecognizer):
 
         poses: dict[str, HandPose] = {}
         for index, landmarks in enumerate(result.hand_landmarks):
-            side = self._side(result, index, landmarks)
-            # Nueva lógica: posición vertical de la mano en lugar de rectitud de dedos.
-            # 0 = centro de la cámara, positivo = mano más arriba, negativo = más abajo.
-            pos = self._hand_y_position(landmarks, width, height)
-            # Mapeo a extensión [0,1] donde 0.5 = centro, >0.5 = arriba, <0.5 = abajo.
-            # Esto permite usar la firma existente de HandPose.
-            norm_pos = (pos + 1.0) / 2.0  # de [-1,1] a [0,1]
-            ext = max(0.0, min(1.0, norm_pos))
+            wrist = landmarks[0]
+            side = self._side(result, index, wrist)
+            raw_position = self._wrist_position(wrist)
+            key = (side, "wrist")
+            previous = self._ema.get(key)
+            alpha = self._settings.smoothing
+            position = raw_position if previous is None else alpha * raw_position + (1.0 - alpha) * previous
+            self._ema[key] = position
+            extension = (position + 1.0) / 2.0
             poses[side] = HandPose(
                 side=side,
-                index_ext=ext,
-                middle_ext=1.0 - ext,  # valor inverso para mantener diferencia
-                raw_index=pos,
-                raw_middle=pos,
-                landmarks=landmarks,
+                index_ext=extension,
+                middle_ext=1.0 - extension,
+                raw_index=position,
+                raw_middle=position,
+                landmarks=[wrist],
             )
 
         # Descartar el suavizado de las manos que han desaparecido.

@@ -18,15 +18,16 @@ Dataclass plana con todos los parámetros. Los campos más relevantes:
 | `num_hands` | `int` | `2` | Manos simultáneas |
 | `detect_conf`, `presence_conf`, `track_conf` | `float` | `0.6` | Umbrales MediaPipe |
 | `max_speed` | `int` | `255` | Velocidad máxima |
+| `speed_multiplier` | `float` | `1.0` | Factor 0.0–1.5, limitado a `max_speed` |
 | `step` | `int` | `8` | Cuantización / histéresis |
 | `min_interval` | `float` | `0.06` | Separación mínima entre envíos |
 | `heartbeat` | `float` | `1.0` | Keep-alive |
 | `lost_grace` | `float` | `0.15` | Gracia al perder una mano |
-| `swap_hands` | `bool` | `False` | Invierte izquierda/derecha |
+| `swap_hands` | `bool` | `True` | Invierte izquierda/derecha |
 | `single_hand` | `str` | `"own"` | `own` o `both` |
 | `smoothing` | `float` | `0.35` | Alfa EMA |
-| `deadzone` | `float` | `0.08` | Zona muerta |
-| `curl_lo`, `curl_hi` | `float` | `0.30`, `0.97` | Rango de rectitud |
+| `deadzone` | `float` | `0.08` | Media anchura normalizada de STOP |
+| `curl_lo`, `curl_hi` | `float` | `0.30`, `0.97` | Parámetros heredados |
 | `preview`, `dry_run`, `debug` | `bool` | — | Modos de ejecución |
 | `image` | `Path \| None` | `None` | Imagen para calibrar |
 
@@ -51,14 +52,15 @@ español.
 @dataclass
 class HandPose:
     side: str             # "L" | "R"
-    index_ext: float      # extensión suavizada del índice (0..1)
-    middle_ext: float     # extensión suavizada del medio (0..1)
-    raw_index: float      # rectitud cruda (calibración)
-    raw_middle: float
+    index_ext: float      # posición de muñeca mapeada a [0,1]
+    middle_ext: float     # complemento de index_ext
+    raw_index: float      # posición de muñeca normalizada [-1,1]
+    raw_middle: float     # misma posición por compatibilidad
     landmarks: list
 
-    def speed(self, max_speed: int) -> float:
-        return (self.index_ext - self.middle_ext) * max_speed
+    def speed(self, max_speed: int, deadzone=0.0, multiplier=1.0) -> float:
+        # Aplica la banda neutra y limita la salida al máximo del motor.
+        ...
 ```
 
 ### `WheelCommand` — `pc_app/domain/entities/wheel_command.py`
@@ -140,8 +142,8 @@ Mantiene la última pose y el último instante visto por lado para aplicar
 
 ```python
 ConfigurationPanelController(store, settings=None)
-panel.state                 # PanelConfig (borrador actual)
-panel.dirty                 # True si hay cambios sin guardar
+panel.state                 # PanelConfig (valores actuales)
+panel.dirty                 # True si falló la escritura automática
 panel.reload()              # relee los YAML
 panel.set_curl_lo(value)
 panel.set_curl_hi(value)
@@ -149,18 +151,22 @@ panel.set_control_mode("own" | "both")
 panel.set_ble_address(mac)
 panel.set_ble_name(name | None)
 panel.set_mirror(True | False)
+panel.set_deadzone(value)
+panel.set_smoothing(value)
+panel.set_step(value)
+panel.set_lost_grace(value)
+panel.set_speed_multiplier(value)
 panel.save()                # valida, escribe YAML y aplica a Settings
 ```
 
-Cada `set_*` equivale al evento de un control de la UI. `save()` es el evento
-del botón **Guardar Configuración**: persiste en `config/settings.yaml` y
-`config/gestures.yaml` y muta el `Settings` en memoria para que el bucle de
-visión use los nuevos valores sin reiniciar.
+Cada `set_*` valida el valor, lo aplica al estado de `Settings` en memoria y lo
+persiste automáticamente en el YAML correspondiente. La interfaz confirma los
+campos de texto con Enter; el slider del multiplicador usa pasos de 0,1.
 
 ## Infraestructura
 
 - `MediaPipeHandTracker(settings)` — `HandLandmarker` en `RunningMode.VIDEO`,
-  timestamps estrictamente crecientes, EMA por `(lado, dedo)`, lado calculado
+  timestamps estrictamente crecientes, EMA por mano, lado calculado
   según `mirror`/`swap_hands`.
 - `FrameGrabber(index, width, height)` — hilo de captura; `latest()` devuelve
   `(frame, seq)` y `fps`.
@@ -175,8 +181,15 @@ visión use los nuevos valores sin reiniciar.
 ## Presentación
 
 - `render(frame, poses, sender, fps, settings, last_payload) -> np.ndarray` —
-  esqueleto + panel inferior.
-- `PreviewWindow` — `show(frame) -> int`, `is_open()`, `close()`.
+  cámara, zona STOP dinámica, ruedas, estado y controles.
+- `PreviewWindow` — ventana completa con teclado y ratón; `f` alterna pantalla
+  completa y ventana.
+- `WebDashboard` (`pc_app/presentation/web_dashboard.py`) — sirve recursos
+  estáticos, estado JSON y vídeo MJPEG; encola acciones y cambios de
+  configuración para que los aplique el bucle principal.
+- `pc_app/presentation/web/` — HTML, CSS y JavaScript del dashboard. El
+  encabezado incluye pantalla completa; las ayudas de configuración abren un
+  modal centrado.
 
 ## Entrada
 

@@ -3,8 +3,8 @@
 
 camera:
   index: 0
-  width: 640
-  height: 480
+  width: 1280
+  height: 720
   mirror: true
 
 mediapipe:
@@ -27,14 +27,17 @@ ble:
 
 control:
   max_speed: 255
-  step: 5
+  speed_multiplier: 0.5
+  step: 3
   min_interval: 0.05
   heartbeat: 1.0
   lost_grace: 0.15
-  single_hand: "own"      # own | both
-  swap_hands: false
+  single_hand: "own"  # own | both
+  swap_hands: true
 
 runtime:
   preview: true
+  web_ui: true
+  web_port: 8765
   debug: false
   log_level: "INFO"

@@ -12,24 +12,24 @@ from pc_app.config import BASE_DIR
 
 DEFAULT_LAYOUT_PATH = BASE_DIR / "design" / "car_control_ui.layout.json"
 
-# Paleta institucional Universidad del Tolima (rojo principal).
-TOLIMA_PALETTE = {
-    "bg": "#F2F2F2",
+# Tokens tomados de design/car_control_ui.pen (tema claro y escenario oscuro).
+PEN_PALETTE = {
+    "bg": "#FFFFFF",
     "surface": "#FFFFFF",
-    "surface-raised": "#F0F0F0",
-    "border": "#D0D0D0",
-    "border-strong": "#B0B0B0",
-    "text-primary": "#1A1A1A",
-    "text-secondary": "#444444",
-    "text-muted": "#777777",
-    "accent": "#FF1744",
-    "accent-dim": "#FFCDD2",
-    "wheel-left": "#FFD600",
-    "wheel-right": "#FF1744",
-    "danger": "#D32F2F",
+    "surface-raised": "#F1F1EE",
+    "border": "#E4E4E1",
+    "border-strong": "#D0D0CB",
+    "text-primary": "#191917",
+    "text-secondary": "#5E5E59",
+    "text-muted": "#8C8C86",
+    "accent": "#4ADE80",
+    "accent-dim": "#E8F4EC",
+    "wheel-left": "#FFA45C",
+    "wheel-right": "#4ADE80",
+    "danger": "#D21F26",
     "input": "#FFFFFF",
     "on-accent": "#FFFFFF",
-    "segment-off": "#E0E0E0",
+    "segment-off": "#E9E9E6",
 }
 
 
@@ -100,8 +100,9 @@ class PenUiLoader:
         mode = theme_raw.get("mode", "dark")
         window = theme_raw.get("window", {}) or {}
         colors_raw = theme_raw.get("colors", {}) or {}
-        # Aplicamos la paleta institucional de la Universidad del Tolima (rojo).
-        colors_raw = {**colors_raw, **TOLIMA_PALETTE}
+        # Los colores de la pantalla de escritorio se mantienen sincronizados
+        # con los tokens visuales del archivo .pen.
+        colors_raw = {**colors_raw, **PEN_PALETTE}
         color_map = {k: v for k, v in colors_raw.items()}
         colors_bgr = {k: _hex_to_bgr(v) for k, v in colors_raw.items()}
         fonts = theme_raw.get("fonts", {}) or {}

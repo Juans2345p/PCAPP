@@ -168,6 +168,13 @@ class YamlConfigStore(IConfigStore):
                 ble.get("device_name", ble.get("name", base.name))
             ),
             mirror=_as_bool(camera.get("mirror", base.mirror), base.mirror),
+            deadzone=float(calibration.get("deadzone", base.deadzone)),
+            smoothing=float(calibration.get("smoothing", base.smoothing)),
+            step=int(control.get("step", base.step)),
+            lost_grace=float(control.get("lost_grace", base.lost_grace)),
+            speed_multiplier=float(
+                control.get("speed_multiplier", base.speed_multiplier)
+            ),
         )
 
     # -- escritura -----------------------------------------------------------
@@ -182,12 +189,25 @@ class YamlConfigStore(IConfigStore):
         settings_text = _set_scalar(
             settings_text, "control", "single_hand", config.control_mode
         )
+        settings_text = _set_scalar(settings_text, "control", "step", config.step)
+        settings_text = _set_scalar(
+            settings_text, "control", "lost_grace", config.lost_grace
+        )
+        settings_text = _set_scalar(
+            settings_text, "control", "speed_multiplier", config.speed_multiplier
+        )
 
         gestures_text = _set_scalar(
             gestures_text, "calibration", "curl_lo", config.curl_lo
         )
         gestures_text = _set_scalar(
             gestures_text, "calibration", "curl_hi", config.curl_hi
+        )
+        gestures_text = _set_scalar(
+            gestures_text, "calibration", "deadzone", config.deadzone
+        )
+        gestures_text = _set_scalar(
+            gestures_text, "calibration", "smoothing", config.smoothing
         )
         gestures_text = _set_scalar(
             gestures_text, None, "control_mode", config.control_mode

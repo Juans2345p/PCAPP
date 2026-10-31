@@ -10,31 +10,30 @@
     "note": "El archivo .pen está cifrado. Este descriptor es la estructura runtime exportada desde el diseño y la consume pc_app/infrastructure/pen_ui_loader.py."
   },
   "theme": {
-    "mode": "dark",
+    "mode": "light",
     "window": {
       "width": 1440,
       "height": 900,
       "top_bar_height": 64,
-      "sidebar_width": 380
+      "sidebar_width": 366
     },
-</rfl:parameter>
     "colors": {
-      "bg": "#0A1A12",
-      "surface": "#0F2418",
-      "surface-raised": "#163020",
-      "border": "#1F3D2A",
-      "border-strong": "#2A5238",
-      "text-primary": "#F2F7F4",
-      "text-secondary": "#A9BDB4",
-      "text-muted": "#6F857C",
-      "accent": "#00C853",
-      "accent-dim": "#003F20",
-      "wheel-left": "#FFD200",
-      "wheel-right": "#00C853",
-      "danger": "#FF5252",
-      "input": "#080D0B",
-      "on-accent": "#080C0A",
-      "segment-off": "#1A2621"
+      "bg": "#FFFFFF",
+      "surface": "#FFFFFF",
+      "surface-raised": "#F1F1EE",
+      "border": "#E4E4E1",
+      "border-strong": "#D0D0CB",
+      "text-primary": "#191917",
+      "text-secondary": "#5E5E59",
+      "text-muted": "#8C8C86",
+      "accent": "#4ADE80",
+      "accent-dim": "#E8F4EC",
+      "wheel-left": "#FFA45C",
+      "wheel-right": "#4ADE80",
+      "danger": "#D21F26",
+      "input": "#FFFFFF",
+      "on-accent": "#FFFFFF",
+      "segment-off": "#E9E9E6"
     },
     "fonts": {
       "heading": "Space Grotesk",

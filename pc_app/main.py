@@ -33,8 +33,9 @@ from pc_app.infrastructure.config_store import YamlConfigStore
 from pc_app.infrastructure.dry_run_sender import DryRunCommandSender
 from pc_app.infrastructure.mediapipe_tracker import MediaPipeHandTracker
 from pc_app.infrastructure.model_loader import ensure_model
-from pc_app.presentation.overlay import render
+from pc_app.presentation.overlay import H, W, handle_key, handle_mouse, render
 from pc_app.presentation.window import PreviewWindow
+from pc_app.presentation.web_dashboard import WebDashboard
 
 LOG = logging.getLogger("gesture-cart")
 
@@ -44,9 +45,8 @@ SIDES = ("L", "R")
 def build_config_panel(settings: Settings) -> ConfigurationPanelController:
     """Crea el controlador de eventos del panel de Configuración.
 
-    La UI sólo tiene que llamar a los ``set_*`` del controlador y a ``save()``;
-    éste lee y escribe ``config/settings.yaml`` y ``config/gestures.yaml`` y
-    aplica los cambios al ``Settings`` en memoria.
+    Los ``set_*`` persisten cada cambio validado en ambos YAML y lo aplican
+    al ``Settings`` en memoria.
     """
     return ConfigurationPanelController(YamlConfigStore(), settings)
 
@@ -75,18 +75,20 @@ async def run(cfg: Settings) -> int:
         with contextlib.suppress(NotImplementedError):
             loop.add_signal_handler(sig, stop.set)
 
-    window = PreviewWindow() if cfg.preview else None
+    dashboard = WebDashboard(cfg.web_port) if cfg.preview and cfg.web_ui else None
+    window = PreviewWindow() if cfg.preview and dashboard is None else None
     executor = ThreadPoolExecutor(max_workers=1, thread_name_prefix="vision")
     last_seq = -1
     panel = build_config_panel(cfg) if cfg.preview else None
-    screen = "live"
 
     LOG.info(
-        "Listo. Pulsa q o ESC en la ventana para salir."
+        "Listo. q/ESC: salir · h: invertir manos · f: pantalla completa."
         if cfg.preview
         else "Listo. Sin ventana: Ctrl+C para salir."
     )
     try:
+        if dashboard is not None:
+            dashboard.start()
         controller.start()
         while not stop.is_set():
             frame, seq = grabber.latest()
@@ -101,31 +103,64 @@ async def run(cfg: Settings) -> int:
             poses = await loop.run_in_executor(executor, tracker.process, frame)
             controller.update(poses)
 
+            if dashboard is not None:
+                for item in dashboard.take_actions():
+                    try:
+                        if item["type"] == "config":
+                            setters = {
+                                "deadzone": panel.set_deadzone,
+                                "smoothing": panel.set_smoothing,
+                                "step": panel.set_step,
+                                "lost_grace": panel.set_lost_grace,
+                                "speed_multiplier": panel.set_speed_multiplier,
+                            }
+                            setters[item["key"]](item["value"])
+                        elif item["action"] == "toggle_running":
+                            controller.set_enabled(not controller.enabled)
+                        elif item["action"] == "toggle_hands":
+                            controller.toggle_hands()
+                        elif item["action"] == "exit":
+                            stop.set()
+                    except Exception as exc:
+                        LOG.warning("No se pudo aplicar el cambio web: %s", exc)
+                dashboard.publish(frame, poses, controller.sender, controller, cfg, grabber.fps)
+
             if window is not None:
+                hover = None
+                if window.mouse_position is not None:
+                    client_w, client_h = window.client_size()
+                    hover = (
+                        round(window.mouse_position[0] * W / max(1, client_w)),
+                        round(window.mouse_position[1] * H / max(1, client_h)),
+                    )
                 key = window.show(render(
                     frame, poses, controller.sender, grabber.fps, cfg,
-                    controller.last_payload, screen=screen, panel=panel,
+                    controller.last_payload, panel=panel,
+                    running=controller.enabled,
+                    hover=hover,
                 ))
                 if key in (27, ord("q")):
                     break
-                if key == ord("h"):
-                    controller.toggle_hands()
-                if key == ord("\t"):
-                    screen = "settings" if screen == "live" else "live"
-                if key == ord("v"):
-                    screen = "live"
-                if key == ord("a"):
-                    screen = "settings"
-                if screen == "settings" and panel is not None:
-                    if key == ord("m"):
-                        panel.set_mirror(not panel.state.mirror)
-                    elif key == ord("o"):
-                        panel.set_control_mode("both" if panel.state.control_mode == "own" else "own")
-                    elif key == ord("g"):
-                        try:
-                            panel.save()
-                        except Exception as exc:
-                            LOG.warning("save failed: %s", exc)
+                consumed = False
+                if panel is not None:
+                    try:
+                        consumed = handle_key(key, panel)
+                    except Exception as exc:
+                        LOG.warning("No se pudo guardar el valor: %s", exc)
+                if not consumed:
+                    if key == ord("h"):
+                        controller.toggle_hands()
+                    elif key == ord("f"):
+                        window.toggle_fullscreen()
+                mouse = window.take_mouse_event()
+                if mouse is not None:
+                    client_w, client_h = window.client_size()
+                    mouse_x = round(mouse[0] * W / max(1, client_w))
+                    mouse_y = round(mouse[1] * H / max(1, client_h))
+                    try:
+                        handle_mouse(mouse_x, mouse_y, panel, controller)
+                    except Exception as exc:
+                        LOG.warning("No se pudo aplicar la configuración: %s", exc)
                 if not window.is_open():
                     break
     finally:
@@ -135,6 +170,8 @@ async def run(cfg: Settings) -> int:
         grabber.join(timeout=1.0)
         if window is not None:
             window.close()
+        if dashboard is not None:
+            dashboard.close()
         tracker.close()
         await controller.stop()  # parada de seguridad al salir
     return 0
@@ -178,22 +215,19 @@ def run_image(cfg: Settings, path: Path) -> int:
             print(f"{label:10s}: no detectada")
             continue
         print(
-            f"{label:10s}: rectitud idx={pose.raw_index:.3f} "
-            f"med={pose.raw_middle:.3f} | "
-            f"extensión idx={pose.index_ext * 100:5.1f}% "
-            f"med={pose.middle_ext * 100:5.1f}% | "
-            f"velocidad={pose.speed(cfg.max_speed):+.0f}"
+            f"{label:10s}: posición de muñeca={pose.raw_index:+.3f} | "
+            f"velocidad={pose.speed(cfg.max_speed, cfg.deadzone, cfg.speed_multiplier):+.0f}"
         )
 
     command = WheelCommand.from_speeds(
-        poses["L"].speed(cfg.max_speed) if "L" in poses else 0.0,
-        poses["R"].speed(cfg.max_speed) if "R" in poses else 0.0,
+        poses["L"].speed(cfg.max_speed, cfg.deadzone, cfg.speed_multiplier) if "L" in poses else 0.0,
+        poses["R"].speed(cfg.max_speed, cfg.deadzone, cfg.speed_multiplier) if "R" in poses else 0.0,
         step=cfg.step,
         max_speed=cfg.max_speed,
     )
     print(f"\ncomando: {' | '.join(command.messages())}  (mensajes BLE separados)")
     print("Si 'izquierda' y 'derecha' están cambiadas, añade --swap-hands.")
-    print("Ajusta --curl-lo / --curl-hi para que 'rectitud' cubra bien 0..100 %.")
+    print("Ajusta --deadzone para cambiar el ancho de STOP.")
     return 0
 
 

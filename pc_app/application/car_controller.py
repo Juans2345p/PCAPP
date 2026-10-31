@@ -38,6 +38,7 @@ class CarController:
         self._last_seen: dict[str, float] = {}
         self.last_command = WheelCommand.stop()
         self.last_payload = "-"
+        self.enabled = True
 
     # -- propiedades para la interfaz ---------------------------------------
     @property
@@ -71,6 +72,9 @@ class CarController:
         cfg = self._settings
         now = time.monotonic() if now is None else now
 
+        if not self.enabled:
+            return None
+
         for side, pose in poses.items():
             if side in SIDES:
                 self._last_pose[side] = pose
@@ -79,7 +83,9 @@ class CarController:
         # Cada rueda usa su mano; si falta o lleva más de `lost_grace` sin
         # verse, su velocidad es 0. Sin ninguna mano -> 'z' (e-stop).
         speeds = {
-            side: self._last_pose[side].speed(cfg.max_speed)
+            side: self._last_pose[side].speed(
+                cfg.max_speed, cfg.deadzone, cfg.speed_multiplier
+            )
             for side in SIDES
             if side in self._last_pose
             and now - self._last_seen[side] <= cfg.lost_grace
@@ -104,3 +110,20 @@ class CarController:
             "SÍ" if self._settings.swap_hands else "NO",
         )
         return self._settings.swap_hands
+
+    def set_enabled(self, enabled: bool) -> bool:
+        """Pausa o reanuda el seguimiento; pausar envía una parada inmediata."""
+        enabled = bool(enabled)
+        if enabled == self.enabled:
+            return self.enabled
+        self.enabled = enabled
+        self._last_pose.clear()
+        self._last_seen.clear()
+        if not enabled:
+            self._gate.feed({}, time.monotonic())
+            stop = WheelCommand.stop()
+            self._sender.send(stop.messages())
+            self.last_command = stop
+            self.last_payload = self._gate.last_payload
+        LOG.info("Control %s", "activado" if enabled else "pausado")
+        return self.enabled

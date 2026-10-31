@@ -63,8 +63,8 @@ dominio.
 Precedencia: valores por defecto de `Settings` < YAML < flags de CLI.
 
 - `config/settings.yaml`: cámara, MediaPipe, BLE, control y runtime.
-- `config/gestures.yaml`: calibración (`curl_lo`, `curl_hi`, `smoothing`,
-  `deadzone`) y `control_mode` (`own`/`both`).
+- `config/gestures.yaml`: `smoothing`, `deadzone` y `control_mode` (`own`/`both`).
+  `deadzone` define la banda STOP de velocidad y su altura visible.
 
 Las rutas relativas de los YAML se resuelven desde la raíz del proyecto, no
 desde el directorio de trabajo. `BASE_DIR` se calcula a partir de
@@ -72,37 +72,39 @@ desde el directorio de trabajo. `BASE_DIR` se calcula a partir de
 
 ## Panel de configuración (UI)
 
-`design/car_control_ui.pen` contiene dos pantallas:
-
-- **En vivo** (`Control gestual · Carrito micro:bit`): vista previa de vídeo,
-  esqueleto de la mano y telemetría de las ruedas `L`/`R`.
-- **Configuración** (`Configuración · Carrito micro:bit`, pestaña `AJUSTES`):
-  mantiene la vista previa y la telemetría a la izquierda y añade a la derecha
-  un formulario editable con botón **Guardar Configuración**.
+El dashboard web sirve cámara y controles en `127.0.0.1` (puerto configurable,
+8765 por defecto): zonas ADELANTE/STOP/ATRÁS a la izquierda, ruedas, estado y
+ajustes a la derecha. El botón ⛶ y `f` alternan pantalla completa; `h` invierte
+la asignación; `q`/`ESC` sale. El multiplicador va de 0 a 1,5 en pasos de 0,1
+y su valor se centra en la perilla. Las ayudas de los ajustes se abren mediante
+iconos `i` en un modal centrado.
 
 Controles y destino en los YAML:
 
 | Control de la UI | Campo | Archivo |
 | ---------------- | ----- | ------- |
-| `CURL LO` / `CURL HI` | `calibration.curl_lo` / `calibration.curl_hi` | `config/gestures.yaml` |
 | Modo `OWN` / `BOTH` | `control_mode` y `control.single_hand` | `config/gestures.yaml` + `config/settings.yaml` |
 | Dispositivo BLE | `ble.device_name` | `config/settings.yaml` |
 | Dirección MAC | `ble.address` | `config/settings.yaml` |
 | Espejo de cámara | `camera.mirror` | `config/settings.yaml` |
+| Zona STOP y suavizado | `calibration.deadzone` / `calibration.smoothing` | `config/gestures.yaml` |
+| Paso, pérdida y multiplicador | `control.step` / `control.lost_grace` / `control.speed_multiplier` | `config/settings.yaml` |
+
+La aplicación conserva y suaviza solo el punto de muñeca (landmark 0) de cada
+mano. Los parámetros `curl_lo` / `curl_hi` siguen en los YAML por compatibilidad
+con configuraciones anteriores y ya no intervienen en el control.
+MediaPipe produce la detección de mano; la lógica posterior solo conserva y
+consume la muñeca.
 
 Flujo de eventos:
 
 1. `build_config_panel(settings)` crea un `ConfigurationPanelController` con
    `YamlConfigStore`.
 2. Al abrir la pantalla, el controlador lee ambos YAML (`read_panel()`).
-3. Cada control llama a su evento (`set_curl_lo`, `set_control_mode`,
-   `set_ble_address`, `set_mirror`, ...), que actualiza un borrador y marca
-   `dirty`.
-4. **Guardar Configuración** llama a `save()`: valida, escribe los YAML y
-   aplica los valores al objeto `Settings` en memoria.
-5. El siguiente frame ya usa el nuevo `mirror`, `curl_lo/hi` o `single_hand`
-   sin reiniciar. Un cambio de nombre/MAC BLE se aplica en la siguiente
-   reconexión del enlace.
+3. Cada campo llama a su evento `set_*`; el valor validado se aplica en caliente
+   al objeto `Settings` y se escribe de inmediato en los YAML.
+4. El siguiente frame usa el valor nuevo. Un cambio de nombre/MAC BLE se aplica
+   en la siguiente reconexión del enlace.
 
 La escritura es quirúrgica: `YamlConfigStore` sustituye sólo los escalares
 gestionados por la UI y conserva comentarios, orden y el resto de claves.

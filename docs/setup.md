@@ -32,15 +32,18 @@ en la raíz del proyecto.
 ## Ejecución
 
 ```bash
-.venv/bin/python main.py                        # control normal
+.venv/bin/python main.py                        # interfaz web en http://127.0.0.1:8765
 .venv/bin/python main.py --dry-run              # sólo visión, sin BLE
-.venv/bin/python main.py --no-preview           # sin ventana (Ctrl+C para salir)
+.venv/bin/python main.py --no-web-ui            # usar la ventana OpenCV
+.venv/bin/python main.py --web-port 9000        # elegir otro puerto local
+.venv/bin/python main.py --no-preview           # sin interfaz (Ctrl+C para salir)
 .venv/bin/python main.py --list-devices         # escanear BLE y ver MACs
 .venv/bin/python main.py --image mano.jpg       # calibrar con una foto
 .venv/bin/python main.py --help
 ```
 
-Teclas: `q` o `ESC` para salir; `h` invierte izquierda/derecha en caliente. Al
+Teclas: `q` o `ESC` para salir; `h` invierte izquierda/derecha en caliente. La
+configuración inicial corrige el orden de manos observado; al
 salir se envía siempre `z`.
 
 ## Configuración
@@ -48,7 +51,7 @@ salir se envía siempre `z`.
 Los valores viven en dos YAML y se pueden sobrescribir con flags:
 
 - `config/settings.yaml`: cámara, MediaPipe, BLE, control y runtime.
-- `config/gestures.yaml`: calibración de dedos y `control_mode`.
+- `config/gestures.yaml`: zona STOP, suavizado y `control_mode`.
 
 ```bash
 .venv/bin/python main.py --config config/settings.yaml --gestures config/gestures.yaml
@@ -61,18 +64,21 @@ se resuelven desde la raíz del proyecto.
 
 ## Panel de Configuración (UI)
 
-`design/car_control_ui.pen` incluye la pantalla **Configuración** (pestaña
-`AJUSTES`) con vista previa, telemetría L/R y un formulario editable:
+La interfaz web local muestra cámara, ruedas, estado y configuración. Abre
+`http://127.0.0.1:8765` en el mismo equipo. Los campos se guardan
+automáticamente; el multiplicador usa pasos de 0,1 y muestra su valor dentro de
+la perilla roja. Los iconos `i` abren ayudas en un modal centrado. El botón ⛶ o
+la tecla `f` activa pantalla completa. El switch pausa el control y envía `z`.
+La transmisión no requiere dependencias adicionales.
 
-- `curl_lo` / `curl_hi` → `config/gestures.yaml`
-- modo `own` / `both` → `config/gestures.yaml` y `config/settings.yaml`
-- dispositivo BLE y MAC → `config/settings.yaml`
-- espejo de cámara → `config/settings.yaml`
-- botón **Guardar Configuración**
+Los valores configurables son:
+
+- zona STOP y suavizado → `config/gestures.yaml`
+- paso, pérdida y multiplicador → `config/settings.yaml`
 
 En Python, `build_config_panel(settings)` crea el controlador de eventos.
-Cada `set_*` actualiza el borrador y `save()` escribe ambos YAML y aplica los
-valores al `Settings` en caliente. Los cambios de `mirror`, calibración y modo
+Cada `set_*` aplica los cambios en caliente y los escribe automáticamente en
+ambos YAML. Los cambios de `mirror`, calibración y modo
 surten efecto en el siguiente frame; un cambio de MAC/nombre BLE se aplica en
 la siguiente reconexión.
 
@@ -92,7 +98,7 @@ la siguiente reconexión.
 .venv/bin/python main.py --image /ruta/foto.jpg
 ```
 
-`--image` imprime rectitud cruda, extensión normalizada y velocidad por mano,
+`--image` imprime posición vertical de muñeca y velocidad por mano,
 además del comando resultante. Añade `--swap-hands` para comprobar el
 intercambio de lados.
 

@@ -40,8 +40,8 @@ class Settings:
 
     # --- Cámara ---
     camera: int = 0
-    width: int = 640
-    height: int = 480
+    width: int = 1280
+    height: int = 720
     mirror: bool = True
 
     # --- MediaPipe ---
@@ -53,14 +53,15 @@ class Settings:
 
     # --- Mapeo gesto -> velocidad ---
     max_speed: int = 255
+    speed_multiplier: float = 1.0
     step: int = 8
     min_interval: float = 0.06
     heartbeat: float = 1.0
     lost_grace: float = 0.15
-    swap_hands: bool = False
+    swap_hands: bool = True
     single_hand: str = "own"
 
-    # --- Calibración de dedos ---
+    # --- Calibración gestual ---
     smoothing: float = 0.35
     deadzone: float = 0.08
     curl_lo: float = 0.30
@@ -68,6 +69,8 @@ class Settings:
 
     # --- Varios ---
     preview: bool = True
+    web_ui: bool = True
+    web_port: int = 8765
     dry_run: bool = False
     debug: bool = False
     log_level: str = "INFO"
@@ -77,6 +80,8 @@ class Settings:
     def validate(self) -> None:
         if not 1 <= self.max_speed <= 255:
             raise SystemExit("max_speed debe estar entre 1 y 255")
+        if not 0.0 <= self.speed_multiplier <= 1.5:
+            raise SystemExit("speed_multiplier debe estar entre 0.0 y 1.5")
         if self.curl_hi <= self.curl_lo:
             raise SystemExit("curl_hi debe ser mayor que curl_lo")
         if not 0.0 < self.smoothing <= 1.0:
@@ -91,6 +96,8 @@ class Settings:
             raise SystemExit("single_hand debe ser 'own' o 'both'")
         if self.lost_grace < 0 or self.min_interval < 0 or self.heartbeat < 0:
             raise SystemExit("lost_grace, min_interval y heartbeat deben ser >= 0")
+        if not 1 <= self.web_port <= 65535:
+            raise SystemExit("web_port debe estar entre 1 y 65535")
 
 
 def _load_yaml(path: Path) -> dict[str, Any]:
@@ -192,6 +199,9 @@ def load_settings(
         track_conf=float(_pick(mediapipe, "track_conf", default=base.track_conf)),
         # Control
         max_speed=int(_pick(control, "max_speed", default=base.max_speed)),
+        speed_multiplier=float(
+            _pick(control, "speed_multiplier", default=base.speed_multiplier)
+        ),
         step=int(_pick(control, "step", default=base.step)),
         min_interval=float(_pick(control, "min_interval", default=base.min_interval)),
         heartbeat=float(_pick(control, "heartbeat", default=base.heartbeat)),
@@ -214,6 +224,8 @@ def load_settings(
         curl_hi=float(_pick(calibration, "curl_hi", default=base.curl_hi)),
         # Varios
         preview=_as_bool(_pick(runtime, "preview", default=base.preview), base.preview),
+        web_ui=_as_bool(_pick(runtime, "web_ui", default=base.web_ui), base.web_ui),
+        web_port=int(_pick(runtime, "web_port", default=base.web_port)),
         debug=_as_bool(_pick(runtime, "debug", default=base.debug), base.debug),
         log_level=str(_pick(runtime, "log_level", default=base.log_level)).upper(),
         dry_run=base.dry_run,
@@ -256,20 +268,27 @@ def build_parser(defaults: Settings) -> argparse.ArgumentParser:
     g.add_argument("--mirror", action=argparse.BooleanOptionalAction, default=d.mirror,
                    help="efecto espejo (más intuitivo)")
     g.add_argument("--preview", action=argparse.BooleanOptionalAction, default=d.preview,
-                   help="mostrar ventana con vídeo y panel de estado")
+                   help="activar interfaz visual")
+    g.add_argument("--web-ui", action=argparse.BooleanOptionalAction, default=d.web_ui,
+                   help="usar la interfaz en el navegador en vez de la ventana OpenCV")
+    g.add_argument("--web-port", type=int, default=d.web_port,
+                   help="puerto local de la interfaz web")
 
     g = p.add_argument_group("Control")
     g.add_argument("--max-speed", type=int, default=d.max_speed, help="velocidad máxima (1-255)")
+    g.add_argument("--speed-multiplier", type=float, default=d.speed_multiplier,
+                   help="factor de velocidad (0.0-1.5; limitado a max-speed)")
     g.add_argument("--step", type=int, default=d.step, help="histéresis de velocidad")
     g.add_argument("--min-interval", type=float, default=d.min_interval, help="s entre envíos BLE")
     g.add_argument("--heartbeat", type=float, default=d.heartbeat,
                    help="s entre reenvíos (keep-alive)")
     g.add_argument("--smoothing", type=float, default=d.smoothing, help="alfa del filtro EMA")
-    g.add_argument("--deadzone", type=float, default=d.deadzone, help="zona muerta de extensión")
+    g.add_argument("--deadzone", type=float, default=d.deadzone,
+                   help="media anchura normalizada de la banda STOP")
     g.add_argument("--curl-lo", type=float, default=d.curl_lo,
-                   help="rectitud para 0 %% de extensión")
+                   help="parámetro heredado; sin efecto en el control por muñeca")
     g.add_argument("--curl-hi", type=float, default=d.curl_hi,
-                   help="rectitud para 100 %% de extensión")
+                   help="parámetro heredado; sin efecto en el control por muñeca")
     g.add_argument("--lost-grace", type=float, default=d.lost_grace,
                    help="s de gracia al perder la mano")
     g.add_argument("--swap-hands", action=argparse.BooleanOptionalAction, default=d.swap_hands,
