@@ -82,12 +82,31 @@ class WheelCommand:
 `messages()` devuelve `("z",)` si ambas ruedas son 0; si no,
 `("L{left}", "R{right}")` en ese orden.
 
+### `PanelConfig` — `pc_app/domain/entities/panel_config.py`
+
+```python
+@dataclass(frozen=True)
+class PanelConfig:
+    curl_lo: float
+    curl_hi: float
+    control_mode: str        # "own" | "both"
+    ble_address: str
+    ble_name: str | None
+    mirror: bool
+
+    def validate(self) -> None
+```
+
+Representa el borrador editable de la pantalla de Configuración.
+
 ### Contratos — `pc_app/domain/interfaces/`
 
 - `IGestureRecognizer.process(frame_bgr) -> dict[str, HandPose]` y `close()`.
 - `ICommandSender`: propiedades `connected`, `sent`, `dropped`, `last_error`,
   `is_dry_run`; métodos `start()`, `send(messages: tuple[str, ...])` y
   `async close(final="z")`.
+- `IConfigStore.read_panel() -> PanelConfig` y
+  `write_panel(config: PanelConfig) -> None`.
 
 ## Aplicación
 
@@ -117,6 +136,27 @@ controller.last_command / last_payload / sender
 Mantiene la última pose y el último instante visto por lado para aplicar
 `lost_grace`; con `single_hand="both"` copia la única velocidad a ambas ruedas.
 
+### `ConfigurationPanelController` — `pc_app/application/config_panel.py`
+
+```python
+ConfigurationPanelController(store, settings=None)
+panel.state                 # PanelConfig (borrador actual)
+panel.dirty                 # True si hay cambios sin guardar
+panel.reload()              # relee los YAML
+panel.set_curl_lo(value)
+panel.set_curl_hi(value)
+panel.set_control_mode("own" | "both")
+panel.set_ble_address(mac)
+panel.set_ble_name(name | None)
+panel.set_mirror(True | False)
+panel.save()                # valida, escribe YAML y aplica a Settings
+```
+
+Cada `set_*` equivale al evento de un control de la UI. `save()` es el evento
+del botón **Guardar Configuración**: persiste en `config/settings.yaml` y
+`config/gestures.yaml` y muta el `Settings` en memoria para que el bucle de
+visión use los nuevos valores sin reiniciar.
+
 ## Infraestructura
 
 - `MediaPipeHandTracker(settings)` — `HandLandmarker` en `RunningMode.VIDEO`,
@@ -128,6 +168,9 @@ Mantiene la última pose y el último instante visto por lado para aplicar
   reconexión con backoff, una escritura por mensaje.
 - `DryRunCommandSender()` — mismo contrato, sin hardware.
 - `ensure_model(path)` — descarga el modelo si falta o está incompleto.
+- `YamlConfigStore(settings_path=None, gestures_path=None)` — lee y escribe
+  los valores del panel. La escritura sustituye sólo los escalares editables y
+  conserva comentarios y el resto del YAML.
 
 ## Presentación
 
@@ -142,6 +185,8 @@ Mantiene la última pose y el último instante visto por lado para aplicar
 - `async run(settings) -> int`: bucle principal.
 - `async list_devices(timeout=8.0) -> int`: escaneo BLE.
 - `run_image(settings, path) -> int`: calibración con imagen fija.
+- `build_config_panel(settings) -> ConfigurationPanelController`: fábrica del
+  controlador de eventos de la pantalla de Configuración.
 - `main(argv=None) -> int`: parseo, logging, modelo y despacho.
 
 `main.py` (raíz) sólo importa y ejecuta `pc_app.main.main`.

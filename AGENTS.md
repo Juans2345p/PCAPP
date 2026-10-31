@@ -9,14 +9,14 @@
 ## Layout
 - `main.py` (root): thin compatibility launcher, delegates to `pc_app.main.main`.
 - `pc_app/config.py`: flat `Settings` dataclass, YAML loader, validation, CLI parser.
-- `pc_app/domain/entities/`: `HandPose`, `WheelCommand` (no OpenCV/MediaPipe/bleak imports).
-- `pc_app/domain/interfaces/`: `IGestureRecognizer`, `ICommandSender`.
-- `pc_app/application/`: `CommandGate` (when to send) and `CarController` (orchestration/safety).
-- `pc_app/infrastructure/`: `MediaPipeHandTracker`, `FrameGrabber`, `BleUartSender`, `DryRunCommandSender`, `ensure_model`.
+- `pc_app/domain/entities/`: `HandPose`, `WheelCommand`, `PanelConfig` (no OpenCV/MediaPipe/bleak imports).
+- `pc_app/domain/interfaces/`: `IGestureRecognizer`, `ICommandSender`, `IConfigStore`.
+- `pc_app/application/`: `CommandGate` (when to send), `CarController` (orchestration/safety) and `ConfigurationPanelController` (settings UI events).
+- `pc_app/infrastructure/`: `MediaPipeHandTracker`, `FrameGrabber`, `BleUartSender`, `DryRunCommandSender`, `YamlConfigStore`, `ensure_model`.
 - `pc_app/presentation/`: `overlay.py` (skeleton + status panel), `window.py` (`cv2` window).
 - `pc_app/main.py`: composition root, async loop, `--list-devices`, `--image`.
 - `config/settings.yaml` and `config/gestures.yaml`: runtime defaults.
-- `design/car_control_ui.pen`: design reference; `docs/`: technical docs.
+- `design/car_control_ui.pen`: design reference; two screens (live + Configuración/AJUSTES). `docs/`: technical docs.
 
 ## Run / verify
 - Interpreter: `.venv/bin/python` (Python 3.11.17, deps installed, including PyYAML). System `python3` is 3.14.8 and may also have deps, but the venv is the intended target.
@@ -34,6 +34,8 @@
 - Shipped YAML overrides some dataclass defaults: `step: 5`, `min_interval: 0.05`. Keep docs in sync if changed.
 - `ble.device_name` is `null` by default, so `address` (MAC) is used. Setting a name makes it take precedence over the MAC; `--name` in the CLI behaves the same way.
 - `config/gestures.yaml` drives `curl_lo`/`curl_hi`/`smoothing`/`deadzone` and `control_mode` (`own`/`both`).
+- Config panel events: `build_config_panel(settings)` (in `pc_app/main.py`) returns a `ConfigurationPanelController` backed by `YamlConfigStore`. `set_*` updates a draft; `save()` writes `config/settings.yaml`/`config/gestures.yaml` and mutates the live `Settings`. The YAML writer is surgical (replaces only managed scalars, keeps comments/order) — do not replace it with a full `yaml.safe_dump` of the files.
+- Mapping: `curl_lo/hi` -> gestures calibration; `control_mode` -> gestures top-level + settings `control.single_hand`; `ble.device_name/address` -> settings BLE; `mirror` -> settings camera. BLE changes apply on the next reconnect; the rest apply on the next frame.
 
 ## MediaPipe gotchas
 - Installed version is **1.2.0: `mp.solutions` does not exist**. Tutorials using `mp.solutions.hands.Hands` fail with `AttributeError`. Use the Tasks API only: `vision.HandLandmarker` + `RunningMode.VIDEO` + `detect_for_video(image, ts_ms)`.

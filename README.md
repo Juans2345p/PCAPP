@@ -89,6 +89,12 @@ python main.py --step 8 --min-interval 0.06
 Precedencia: valores por defecto < YAML < CLI. Las rutas relativas de los YAML
 se resuelven desde la raíz del proyecto.
 
+El diseño `design/car_control_ui.pen` incluye una pantalla **Configuración**
+(pestaña `AJUSTES`) con vista previa, telemetría L/R y controles editables de
+calibración, modo de control, BLE/MAC y espejo. Sus eventos están implementados
+en `pc_app` mediante `ConfigurationPanelController` + `YamlConfigStore`, que
+escriben directamente en ambos YAML al pulsar **Guardar Configuración**.
+
 Parámetros interesantes (los mostrados son los de `config/settings.yaml`):
 
 | Flag              | Default | Descripción                                        |

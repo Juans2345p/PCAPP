@@ -23,11 +23,13 @@ import cv2
 from bleak import BleakScanner
 
 from pc_app.application.car_controller import CarController
+from pc_app.application.config_panel import ConfigurationPanelController
 from pc_app.config import Settings, parse_args
 from pc_app.domain.entities.wheel_command import WheelCommand
 from pc_app.domain.interfaces.command_sender import ICommandSender
 from pc_app.infrastructure.ble_uart import BleUartSender
 from pc_app.infrastructure.camera import FrameGrabber
+from pc_app.infrastructure.config_store import YamlConfigStore
 from pc_app.infrastructure.dry_run_sender import DryRunCommandSender
 from pc_app.infrastructure.mediapipe_tracker import MediaPipeHandTracker
 from pc_app.infrastructure.model_loader import ensure_model
@@ -37,6 +39,16 @@ from pc_app.presentation.window import PreviewWindow
 LOG = logging.getLogger("gesture-cart")
 
 SIDES = ("L", "R")
+
+
+def build_config_panel(settings: Settings) -> ConfigurationPanelController:
+    """Crea el controlador de eventos del panel de Configuración.
+
+    La UI sólo tiene que llamar a los ``set_*`` del controlador y a ``save()``;
+    éste lee y escribe ``config/settings.yaml`` y ``config/gestures.yaml`` y
+    aplica los cambios al ``Settings`` en memoria.
+    """
+    return ConfigurationPanelController(YamlConfigStore(), settings)
 
 
 def _build_sender(cfg: Settings) -> ICommandSender:
@@ -66,6 +78,8 @@ async def run(cfg: Settings) -> int:
     window = PreviewWindow() if cfg.preview else None
     executor = ThreadPoolExecutor(max_workers=1, thread_name_prefix="vision")
     last_seq = -1
+    panel = build_config_panel(cfg) if cfg.preview else None
+    screen = "live"
 
     LOG.info(
         "Listo. Pulsa q o ESC en la ventana para salir."
@@ -90,12 +104,28 @@ async def run(cfg: Settings) -> int:
             if window is not None:
                 key = window.show(render(
                     frame, poses, controller.sender, grabber.fps, cfg,
-                    controller.last_payload,
+                    controller.last_payload, screen=screen, panel=panel,
                 ))
                 if key in (27, ord("q")):
                     break
                 if key == ord("h"):
                     controller.toggle_hands()
+                if key == ord("\t"):
+                    screen = "settings" if screen == "live" else "live"
+                if key == ord("v"):
+                    screen = "live"
+                if key == ord("a"):
+                    screen = "settings"
+                if screen == "settings" and panel is not None:
+                    if key == ord("m"):
+                        panel.set_mirror(not panel.state.mirror)
+                    elif key == ord("o"):
+                        panel.set_control_mode("both" if panel.state.control_mode == "own" else "own")
+                    elif key == ord("g"):
+                        try:
+                            panel.save()
+                        except Exception as exc:
+                            LOG.warning("save failed: %s", exc)
                 if not window.is_open():
                     break
     finally:

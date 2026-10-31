@@ -10,12 +10,12 @@ dentro.
 
 | Capa | Ruta | Responsabilidad |
 | ---- | ---- | --------------- |
-| Dominio | `pc_app/domain/` | Entidades (`HandPose`, `WheelCommand`) y contratos (`IGestureRecognizer`, `ICommandSender`). Sin dependencias de infraestructura. |
+| Dominio | `pc_app/domain/` | Entidades (`HandPose`, `WheelCommand`, `PanelConfig`) y contratos (`IGestureRecognizer`, `ICommandSender`, `IConfigStore`). Sin dependencias de infraestructura. |
 | Configuración | `pc_app/config.py` | Carga de `config/settings.yaml` + `config/gestures.yaml`, validación y sobrescritura por CLI. |
-| Aplicación | `pc_app/application/` | `CommandGate` (cuándo enviar) y `CarController` (orquestación, gracia de pérdida, parada segura). |
-| Infraestructura | `pc_app/infrastructure/` | MediaPipe (`MediaPipeHandTracker`), webcam (`FrameGrabber`), BLE (`BleUartSender`), dry-run y descarga del modelo. |
-| Presentación | `pc_app/presentation/` | Panel OpenCV (`overlay.py`) y ventana (`window.py`). |
-| Entrada | `pc_app/main.py`, `main.py` | Composición de dependencias, bucle asíncrono y modos `--image` / `--list-devices`. |
+| Aplicación | `pc_app/application/` | `CommandGate` (cuándo enviar), `CarController` (orquestación, gracia de pérdida, parada segura) y `ConfigurationPanelController` (eventos del panel de ajustes). |
+| Infraestructura | `pc_app/infrastructure/` | MediaPipe (`MediaPipeHandTracker`), webcam (`FrameGrabber`), BLE (`BleUartSender`), dry-run, descarga del modelo y persistencia YAML (`YamlConfigStore`). |
+| Presentación | `pc_app/presentation/` | Panel OpenCV (`overlay.py`) y ventana (`window.py`). El diseño de escritorio vive en `design/car_control_ui.pen`. |
+| Entrada | `pc_app/main.py`, `main.py` | Composición de dependencias, bucle asíncrono, fábrica `build_config_panel()` y modos `--image` / `--list-devices`. |
 
 Dirección de dependencias:
 
@@ -69,3 +69,40 @@ Precedencia: valores por defecto de `Settings` < YAML < flags de CLI.
 Las rutas relativas de los YAML se resuelven desde la raíz del proyecto, no
 desde el directorio de trabajo. `BASE_DIR` se calcula a partir de
 `pc_app/config.py`.
+
+## Panel de configuración (UI)
+
+`design/car_control_ui.pen` contiene dos pantallas:
+
+- **En vivo** (`Control gestual · Carrito micro:bit`): vista previa de vídeo,
+  esqueleto de la mano y telemetría de las ruedas `L`/`R`.
+- **Configuración** (`Configuración · Carrito micro:bit`, pestaña `AJUSTES`):
+  mantiene la vista previa y la telemetría a la izquierda y añade a la derecha
+  un formulario editable con botón **Guardar Configuración**.
+
+Controles y destino en los YAML:
+
+| Control de la UI | Campo | Archivo |
+| ---------------- | ----- | ------- |
+| `CURL LO` / `CURL HI` | `calibration.curl_lo` / `calibration.curl_hi` | `config/gestures.yaml` |
+| Modo `OWN` / `BOTH` | `control_mode` y `control.single_hand` | `config/gestures.yaml` + `config/settings.yaml` |
+| Dispositivo BLE | `ble.device_name` | `config/settings.yaml` |
+| Dirección MAC | `ble.address` | `config/settings.yaml` |
+| Espejo de cámara | `camera.mirror` | `config/settings.yaml` |
+
+Flujo de eventos:
+
+1. `build_config_panel(settings)` crea un `ConfigurationPanelController` con
+   `YamlConfigStore`.
+2. Al abrir la pantalla, el controlador lee ambos YAML (`read_panel()`).
+3. Cada control llama a su evento (`set_curl_lo`, `set_control_mode`,
+   `set_ble_address`, `set_mirror`, ...), que actualiza un borrador y marca
+   `dirty`.
+4. **Guardar Configuración** llama a `save()`: valida, escribe los YAML y
+   aplica los valores al objeto `Settings` en memoria.
+5. El siguiente frame ya usa el nuevo `mirror`, `curl_lo/hi` o `single_hand`
+   sin reiniciar. Un cambio de nombre/MAC BLE se aplica en la siguiente
+   reconexión del enlace.
+
+La escritura es quirúrgica: `YamlConfigStore` sustituye sólo los escalares
+gestionados por la UI y conserva comentarios, orden y el resto de claves.

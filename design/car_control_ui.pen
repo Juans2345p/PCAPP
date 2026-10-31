@@ -2471,6 +2471,2137 @@
           ]
         }
       ]
+    },
+    {
+      "type": "frame",
+      "id": "vSiOG",
+      "x": 1520,
+      "y": 0,
+      "name": "Configuración · Carrito micro:bit",
+      "clip": true,
+      "width": 1440,
+      "height": 900,
+      "fill": "$bg",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "zshBe",
+          "name": "Top bar",
+          "width": "fill_container",
+          "height": 72,
+          "fill": "$surface",
+          "stroke": "$border",
+          "strokeWidth": {
+            "bottom": 1
+          },
+          "padding": [
+            0,
+            30
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "JFU9F",
+              "name": "Brand",
+              "gap": 12,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "pTQuH",
+                  "name": "Mark",
+                  "width": 36,
+                  "height": 36,
+                  "fill": "$accent-dim",
+                  "cornerRadius": 8,
+                  "stroke": "$border-strong",
+                  "strokeWidth": 1,
+                  "layout": "none",
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "kncUv",
+                      "x": 9,
+                      "y": 9,
+                      "name": "Hand icon",
+                      "width": 18,
+                      "height": 18,
+                      "icon": "hand",
+                      "library": "lucide",
+                      "fill": "$accent"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "zI0MH",
+                  "name": "Brand text",
+                  "layout": "vertical",
+                  "gap": 1,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "rJkJa",
+                      "name": "Brand name",
+                      "fill": "$text-primary",
+                      "content": "GESTO",
+                      "fontFamily": "$font-heading",
+                      "fontSize": 15,
+                      "fontWeight": "700",
+                      "letterSpacing": 1.2
+                    },
+                    {
+                      "type": "text",
+                      "id": "e6LjnF",
+                      "name": "Brand sub",
+                      "fill": "$text-muted",
+                      "content": "CAR CONTROL",
+                      "fontFamily": "$font-mono",
+                      "fontSize": 9,
+                      "fontWeight": "normal",
+                      "letterSpacing": 1.6
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "atNu6",
+              "name": "View tabs",
+              "fill": "$surface-raised",
+              "cornerRadius": 8,
+              "stroke": "$border",
+              "strokeWidth": 1,
+              "gap": 4,
+              "padding": 4,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "qhB2k",
+                  "name": "Tab EN VIVO",
+                  "fill": "#111B1700",
+                  "cornerRadius": 6,
+                  "padding": [
+                    7,
+                    14
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "UcSZJ",
+                      "name": "Tab label EN VIVO",
+                      "fill": "$text-muted",
+                      "content": "EN VIVO",
+                      "fontFamily": "$font-mono",
+                      "fontSize": 10,
+                      "fontWeight": "normal",
+                      "letterSpacing": 0.8
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "mBGNs",
+                  "name": "Tab CALIBRACIÓN",
+                  "fill": "#111B1700",
+                  "cornerRadius": 6,
+                  "padding": [
+                    7,
+                    14
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "i8RARm",
+                      "name": "Tab label CALIBRACIÓN",
+                      "fill": "$text-muted",
+                      "content": "CALIBRACIÓN",
+                      "fontFamily": "$font-mono",
+                      "fontSize": 10,
+                      "fontWeight": "normal",
+                      "letterSpacing": 0.8
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "PUFG6",
+                  "name": "Tab AJUSTES",
+                  "fill": "$accent-dim",
+                  "cornerRadius": 6,
+                  "padding": [
+                    7,
+                    14
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "D8xzi",
+                      "name": "Tab label AJUSTES",
+                      "fill": "$accent",
+                      "content": "AJUSTES",
+                      "fontFamily": "$font-mono",
+                      "fontSize": 10,
+                      "fontWeight": "normal",
+                      "letterSpacing": 0.8
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "e8IWB",
+              "name": "Top actions",
+              "gap": 10,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "zLFxB",
+                  "name": "BLE status",
+                  "fill": "#0F2419",
+                  "cornerRadius": 999,
+                  "stroke": "#1F5138",
+                  "strokeWidth": 1,
+                  "gap": 8,
+                  "padding": [
+                    7,
+                    12
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "ellipse",
+                      "id": "UhbQx",
+                      "name": "BLE dot",
+                      "fill": "$accent",
+                      "width": 7,
+                      "height": 7
+                    },
+                    {
+                      "type": "text",
+                      "id": "WhxG4",
+                      "name": "BLE status label",
+                      "fill": "#8EF0B0",
+                      "content": "BLE CONECTADO",
+                      "fontFamily": "$font-mono",
+                      "fontSize": 10,
+                      "fontWeight": "normal",
+                      "letterSpacing": 0.6
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "dE0TK",
+                  "name": "Device address",
+                  "fill": "$text-muted",
+                  "content": "E0:BE:3F:2E:C9:8A",
+                  "fontFamily": "$font-mono",
+                  "fontSize": 10,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "MdVS0",
+                  "name": "Icon button settings-2",
+                  "width": 34,
+                  "height": 34,
+                  "fill": "$surface-raised",
+                  "cornerRadius": 8,
+                  "stroke": "$border",
+                  "strokeWidth": 1,
+                  "layout": "none",
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "N8VRN6",
+                      "x": 8,
+                      "y": 8,
+                      "name": "Icon settings-2",
+                      "width": 16,
+                      "height": 16,
+                      "icon": "settings-2",
+                      "library": "lucide",
+                      "fill": "$text-secondary"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "sVePc",
+                  "name": "Icon button circle-help",
+                  "width": 34,
+                  "height": 34,
+                  "fill": "$surface-raised",
+                  "cornerRadius": 8,
+                  "stroke": "$border",
+                  "strokeWidth": 1,
+                  "layout": "none",
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "vTC0M",
+                      "x": 8,
+                      "y": 8,
+                      "name": "Icon circle-help",
+                      "width": 16,
+                      "height": 16,
+                      "icon": "keyboard",
+                      "library": "lucide",
+                      "fill": "$text-secondary"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "sqvjA",
+          "name": "Main body",
+          "width": "fill_container",
+          "height": "fill_container",
+          "gap": 20,
+          "padding": 28,
+          "children": [
+            {
+              "type": "frame",
+              "id": "NSih2",
+              "name": "Left column",
+              "width": "fill_container",
+              "height": "fill_container",
+              "layout": "vertical",
+              "gap": 14,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "tPoeq",
+                  "name": "Camera stage",
+                  "clip": true,
+                  "width": "fill_container",
+                  "height": "fill_container",
+                  "fill": {
+                    "type": "gradient",
+                    "gradientType": "linear",
+                    "enabled": true,
+                    "rotation": 150,
+                    "size": {
+                      "height": 1
+                    },
+                    "colors": [
+                      {
+                        "color": "#0C1713",
+                        "position": 0
+                      },
+                      {
+                        "color": "#060A08",
+                        "position": 1
+                      }
+                    ]
+                  },
+                  "cornerRadius": 12,
+                  "stroke": "$border",
+                  "strokeWidth": 1,
+                  "layout": "none",
+                  "children": [
+                    {
+                      "type": "path",
+                      "id": "w7PEY",
+                      "x": 0,
+                      "y": 0,
+                      "name": "Camera grid",
+                      "opacity": 0.32,
+                      "geometry": "M0 116l984 0m-984 116l984 0m-984 116l984 0m-984 116l984 0m-984 116l984 0m-861-580l0 694m123-694l0 694m123-694l0 694m123-694l0 694m123-694l0 694m123-694l0 694m123-694l0 694",
+                      "viewBox": [
+                        0,
+                        0,
+                        984,
+                        694
+                      ],
+                      "width": 984,
+                      "height": 694,
+                      "stroke": "$border-strong",
+                      "strokeWidth": 1
+                    },
+                    {
+                      "type": "path",
+                      "id": "w4w6tN",
+                      "x": 0,
+                      "y": 0,
+                      "name": "Frame brackets",
+                      "opacity": 0.45,
+                      "geometry": "M18 44l0-26 26 0m896 0l26 0 0 26m0 606l0 26-26 0m-896 0l-26 0 0-26",
+                      "viewBox": [
+                        0,
+                        0,
+                        984,
+                        694
+                      ],
+                      "width": 984,
+                      "height": 694,
+                      "stroke": "$accent",
+                      "strokeWidth": 1.5
+                    },
+                    {
+                      "type": "ellipse",
+                      "id": "e5RGl",
+                      "x": 300,
+                      "y": 210,
+                      "name": "Hand glow",
+                      "fill": {
+                        "type": "gradient",
+                        "gradientType": "radial",
+                        "enabled": true,
+                        "rotation": 0,
+                        "size": {
+                          "width": 1,
+                          "height": 1
+                        },
+                        "colors": [
+                          {
+                            "color": "#1C5A3A66",
+                            "position": 0
+                          },
+                          {
+                            "color": "#1C5A3A00",
+                            "position": 1
+                          }
+                        ]
+                      },
+                      "width": 420,
+                      "height": 470,
+                      "effect": {
+                        "type": "blur",
+                        "radius": 40
+                      }
+                    },
+                    {
+                      "type": "path",
+                      "id": "HQsTr",
+                      "x": 0,
+                      "y": 0,
+                      "name": "Hand skeleton",
+                      "opacity": 0.92,
+                      "geometry": "M500 590l-45-32m0 0l-37-38m0 0l-35-40m0 0l-31-38m148 148l-30-78m0 0l-11-87m0 0l-6-57m0 0l-5-56m22 200l50-7m0 0l8-87m0 0l21-39m0 0l24 30m-53 96l43 7m0 0l28-74m0 0l20-41m0 0l21 29m-69 86l37 16m0 0l38-56m0 0l19-35m0 0l21 25m-178 128l100-62",
+                      "viewBox": [
+                        0,
+                        0,
+                        984,
+                        694
+                      ],
+                      "width": 984,
+                      "height": 694,
+                      "stroke": "$accent",
+                      "strokeWidth": 2.5,
+                      "strokeLinejoin": "round",
+                      "strokeLinecap": "round"
+                    },
+                    {
+                      "type": "ellipse",
+                      "id": "TTy3s",
+                      "x": 496,
+                      "y": 586,
+                      "name": "Landmark 0",
+                      "fill": "#0B1512",
+                      "width": 8,
+                      "height": 8,
+                      "stroke": "$accent",
+                      "strokeWidth": 1.5
+                    },
+                    {
+                      "type": "ellipse",
+                      "id": "MyRPi",
+                      "x": 451,
+                      "y": 554,
+                      "name": "Landmark 1",
+                      "fill": "#0B1512",
+                      "width": 8,
+                      "height": 8,
+                      "stroke": "$accent",
+                      "strokeWidth": 1.5
+                    },
+                    {
+                      "type": "ellipse",
+                      "id": "q2QuKk",
+                      "x": 414,
+                      "y": 516,
+                      "name": "Landmark 2",
+                      "fill": "#0B1512",
+                      "width": 8,
+                      "height": 8,
+                      "stroke": "$accent",
+                      "strokeWidth": 1.5
+                    },
+                    {
+                      "type": "ellipse",
+                      "id": "NpXuy",
+                      "x": 379,
+                      "y": 476,
+                      "name": "Landmark 3",
+                      "fill": "#0B1512",
+                      "width": 8,
+                      "height": 8,
+                      "stroke": "$accent",
+                      "strokeWidth": 1.5
+                    },
+                    {
+                      "type": "ellipse",
+                      "id": "RbYaG",
+                      "x": 346,
+                      "y": 436,
+                      "name": "Landmark 4",
+                      "fill": "$accent",
+                      "width": 12,
+                      "height": 12,
+                      "stroke": "$accent"
+                    },
+                    {
+                      "type": "ellipse",
+                      "id": "qo1no",
+                      "x": 466,
+                      "y": 508,
+                      "name": "Landmark 5",
+                      "fill": "#0B1512",
+                      "width": 8,
+                      "height": 8,
+                      "stroke": "$accent",
+                      "strokeWidth": 1.5
+                    },
+                    {
+                      "type": "ellipse",
+                      "id": "pa35t",
+                      "x": 455,
+                      "y": 421,
+                      "name": "Landmark 6",
+                      "fill": "#0B1512",
+                      "width": 8,
+                      "height": 8,
+                      "stroke": "$accent",
+                      "strokeWidth": 1.5
+                    },
+                    {
+                      "type": "ellipse",
+                      "id": "Lem5f",
+                      "x": 449,
+                      "y": 364,
+                      "name": "Landmark 7",
+                      "fill": "#0B1512",
+                      "width": 8,
+                      "height": 8,
+                      "stroke": "$accent",
+                      "strokeWidth": 1.5
+                    },
+                    {
+                      "type": "ellipse",
+                      "id": "q64j12",
+                      "x": 442,
+                      "y": 306,
+                      "name": "Landmark 8",
+                      "fill": "$accent",
+                      "width": 12,
+                      "height": 12,
+                      "stroke": "$accent"
+                    },
+                    {
+                      "type": "ellipse",
+                      "id": "y1My3e",
+                      "x": 516,
+                      "y": 501,
+                      "name": "Landmark 9",
+                      "fill": "#0B1512",
+                      "width": 8,
+                      "height": 8,
+                      "stroke": "$accent",
+                      "strokeWidth": 1.5
+                    },
+                    {
+                      "type": "ellipse",
+                      "id": "YQpD4",
+                      "x": 524,
+                      "y": 414,
+                      "name": "Landmark 10",
+                      "fill": "#0B1512",
+                      "width": 8,
+                      "height": 8,
+                      "stroke": "$accent",
+                      "strokeWidth": 1.5
+                    },
+                    {
+                      "type": "ellipse",
+                      "id": "sNmnY",
+                      "x": 545,
+                      "y": 375,
+                      "name": "Landmark 11",
+                      "fill": "#0B1512",
+                      "width": 8,
+                      "height": 8,
+                      "stroke": "$accent",
+                      "strokeWidth": 1.5
+                    },
+                    {
+                      "type": "ellipse",
+                      "id": "k2iJs3",
+                      "x": 567,
+                      "y": 403,
+                      "name": "Landmark 12",
+                      "fill": "$accent",
+                      "width": 12,
+                      "height": 12,
+                      "stroke": "$accent"
+                    },
+                    {
+                      "type": "ellipse",
+                      "id": "RFDy4",
+                      "x": 559,
+                      "y": 508,
+                      "name": "Landmark 13",
+                      "fill": "#0B1512",
+                      "width": 8,
+                      "height": 8,
+                      "stroke": "$accent",
+                      "strokeWidth": 1.5
+                    },
+                    {
+                      "type": "ellipse",
+                      "id": "T3Ax3",
+                      "x": 587,
+                      "y": 434,
+                      "name": "Landmark 14",
+                      "fill": "#0B1512",
+                      "width": 8,
+                      "height": 8,
+                      "stroke": "$accent",
+                      "strokeWidth": 1.5
+                    },
+                    {
+                      "type": "ellipse",
+                      "id": "C4tke",
+                      "x": 607,
+                      "y": 393,
+                      "name": "Landmark 15",
+                      "fill": "#0B1512",
+                      "width": 8,
+                      "height": 8,
+                      "stroke": "$accent",
+                      "strokeWidth": 1.5
+                    },
+                    {
+                      "type": "ellipse",
+                      "id": "C3HqC1",
+                      "x": 626,
+                      "y": 420,
+                      "name": "Landmark 16",
+                      "fill": "$accent",
+                      "width": 12,
+                      "height": 12,
+                      "stroke": "$accent"
+                    },
+                    {
+                      "type": "ellipse",
+                      "id": "zzaW4",
+                      "x": 596,
+                      "y": 524,
+                      "name": "Landmark 17",
+                      "fill": "#0B1512",
+                      "width": 8,
+                      "height": 8,
+                      "stroke": "$accent",
+                      "strokeWidth": 1.5
+                    },
+                    {
+                      "type": "ellipse",
+                      "id": "j3xkRk",
+                      "x": 634,
+                      "y": 468,
+                      "name": "Landmark 18",
+                      "fill": "#0B1512",
+                      "width": 8,
+                      "height": 8,
+                      "stroke": "$accent",
+                      "strokeWidth": 1.5
+                    },
+                    {
+                      "type": "ellipse",
+                      "id": "hK7U5",
+                      "x": 653,
+                      "y": 433,
+                      "name": "Landmark 19",
+                      "fill": "#0B1512",
+                      "width": 8,
+                      "height": 8,
+                      "stroke": "$accent",
+                      "strokeWidth": 1.5
+                    },
+                    {
+                      "type": "ellipse",
+                      "id": "KA5t9",
+                      "x": 672,
+                      "y": 456,
+                      "name": "Landmark 20",
+                      "fill": "$accent",
+                      "width": 12,
+                      "height": 12,
+                      "stroke": "$accent"
+                    },
+                    {
+                      "type": "path",
+                      "id": "NXScB",
+                      "x": 0,
+                      "y": 0,
+                      "name": "Callout line ÍNDICE",
+                      "opacity": 0.8,
+                      "geometry": "M464 300l186-18",
+                      "viewBox": [
+                        0,
+                        0,
+                        984,
+                        694
+                      ],
+                      "width": 984,
+                      "height": 694,
+                      "stroke": "$accent",
+                      "strokeWidth": 1.2
+                    },
+                    {
+                      "type": "frame",
+                      "id": "lyW2V",
+                      "x": 664,
+                      "y": 266,
+                      "name": "Callout ÍNDICE",
+                      "fill": "#080D0BD9",
+                      "cornerRadius": 6,
+                      "stroke": "$border",
+                      "strokeWidth": 1,
+                      "layout": "vertical",
+                      "gap": 1,
+                      "padding": [
+                        7,
+                        10
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "kgHUX",
+                          "name": "Callout label ÍNDICE",
+                          "fill": "$accent",
+                          "content": "ÍNDICE",
+                          "fontFamily": "$font-mono",
+                          "fontSize": 9,
+                          "fontWeight": "normal",
+                          "letterSpacing": 1
+                        },
+                        {
+                          "type": "text",
+                          "id": "BDtKC",
+                          "name": "Callout value ÍNDICE",
+                          "fill": "$text-primary",
+                          "content": "92% · AVANZAR",
+                          "fontFamily": "$font-heading",
+                          "fontSize": 12,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "path",
+                      "id": "DQW1i",
+                      "x": 0,
+                      "y": 0,
+                      "name": "Callout line MEDIO",
+                      "opacity": 0.8,
+                      "geometry": "M588 400l102 22",
+                      "viewBox": [
+                        0,
+                        0,
+                        984,
+                        694
+                      ],
+                      "width": 984,
+                      "height": 694,
+                      "stroke": "$wheel-left",
+                      "strokeWidth": 1.2
+                    },
+                    {
+                      "type": "frame",
+                      "id": "sNf8I",
+                      "x": 702,
+                      "y": 405,
+                      "name": "Callout MEDIO",
+                      "fill": "#080D0BD9",
+                      "cornerRadius": 6,
+                      "stroke": "$border",
+                      "strokeWidth": 1,
+                      "layout": "vertical",
+                      "gap": 1,
+                      "padding": [
+                        7,
+                        10
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "HCbZf",
+                          "name": "Callout label MEDIO",
+                          "fill": "$wheel-left",
+                          "content": "MEDIO",
+                          "fontFamily": "$font-mono",
+                          "fontSize": 9,
+                          "fontWeight": "normal",
+                          "letterSpacing": 1
+                        },
+                        {
+                          "type": "text",
+                          "id": "isFYX",
+                          "name": "Callout value MEDIO",
+                          "fill": "$text-primary",
+                          "content": "18% · CURVADO",
+                          "fontFamily": "$font-heading",
+                          "fontSize": 12,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "hDbf1",
+                      "x": 22,
+                      "y": 20,
+                      "name": "Camera top overlay",
+                      "width": 940,
+                      "justifyContent": "space_between",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "pFwwa",
+                          "name": "Camera meta",
+                          "gap": 10,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "wH0vJ",
+                              "name": "Live badge",
+                              "fill": "#10231BE6",
+                              "cornerRadius": 999,
+                              "stroke": "#1F5138",
+                              "strokeWidth": 1,
+                              "gap": 7,
+                              "padding": [
+                                5,
+                                9
+                              ],
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "ellipse",
+                                  "id": "R7Hoo",
+                                  "name": "Live dot",
+                                  "fill": "$danger",
+                                  "width": 6,
+                                  "height": 6
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "a1bDY",
+                                  "name": "Live text",
+                                  "fill": "#D7FFE5",
+                                  "content": "EN VIVO",
+                                  "fontFamily": "$font-mono",
+                                  "fontSize": 9,
+                                  "fontWeight": "normal",
+                                  "letterSpacing": 0.8
+                                }
+                              ]
+                            },
+                            {
+                              "type": "text",
+                              "id": "b63UfN",
+                              "name": "Camera source",
+                              "fill": "$text-secondary",
+                              "content": "CAM 0 · 640 × 480",
+                              "fontFamily": "$font-mono",
+                              "fontSize": 10,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "c06CY",
+                          "name": "Camera stats",
+                          "gap": 14,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "W2HbCV",
+                              "name": "FPS",
+                              "fill": "$accent",
+                              "content": "29.8 FPS",
+                              "fontFamily": "$font-mono",
+                              "fontSize": 10,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "text",
+                              "id": "eNiwS",
+                              "name": "Mirror hint",
+                              "fill": "$text-muted",
+                              "content": "h: invertir manos",
+                              "fontFamily": "$font-mono",
+                              "fontSize": 10,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "t5kdN",
+                      "x": 22,
+                      "y": 646,
+                      "name": "Hands counter",
+                      "fill": "#080D0BD9",
+                      "cornerRadius": 6,
+                      "stroke": "$border",
+                      "strokeWidth": 1,
+                      "gap": 8,
+                      "padding": [
+                        7,
+                        10
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "zMxYS",
+                          "name": "Hands icon",
+                          "width": 13,
+                          "height": 13,
+                          "icon": "hand",
+                          "library": "lucide",
+                          "fill": "$accent"
+                        },
+                        {
+                          "type": "text",
+                          "id": "djwue",
+                          "name": "Hands text",
+                          "fill": "$text-secondary",
+                          "content": "MANOS 2 / 2 · SIGUIENDO",
+                          "fontFamily": "$font-mono",
+                          "fontSize": 9,
+                          "fontWeight": "normal",
+                          "letterSpacing": 0.5
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "M5KOs",
+                      "x": 760,
+                      "y": 654,
+                      "name": "Tracking note",
+                      "fill": "$text-muted",
+                      "content": "SEGUIMIENTO DE 21 PUNTOS",
+                      "fontFamily": "$font-mono",
+                      "fontSize": 9,
+                      "fontWeight": "normal",
+                      "letterSpacing": 0.5
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "rNcEz",
+                  "name": "Wheel telemetry",
+                  "width": "fill_container",
+                  "height": 64,
+                  "fill": "$surface",
+                  "cornerRadius": 10,
+                  "stroke": "$border",
+                  "strokeWidth": 1,
+                  "gap": 24,
+                  "padding": [
+                    0,
+                    18
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "rQuna",
+                      "name": "Telemetry title",
+                      "width": 142,
+                      "layout": "vertical",
+                      "gap": 3,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "k61b5",
+                          "name": "Telemetry title label",
+                          "fill": "$text-muted",
+                          "content": "TELEMETRÍA",
+                          "fontFamily": "$font-mono",
+                          "fontSize": 9,
+                          "fontWeight": "normal",
+                          "letterSpacing": 1.2
+                        },
+                        {
+                          "type": "text",
+                          "id": "YF6Gi",
+                          "name": "Telemetry title sub",
+                          "fill": "$text-muted",
+                          "content": "RUEDAS L / R",
+                          "fontFamily": "$font-mono",
+                          "fontSize": 8,
+                          "fontWeight": "normal",
+                          "letterSpacing": 0.6
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "c1AYew",
+                      "name": "Telemetry wheel L",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 4,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "B17pCW",
+                          "name": "Telemetry top L",
+                          "width": "fill_container",
+                          "justifyContent": "space_between",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "N6u92F",
+                              "name": "Telemetry label L",
+                              "fill": "$wheel-left",
+                              "content": "RUEDA L",
+                              "fontFamily": "$font-mono",
+                              "fontSize": 9,
+                              "fontWeight": "normal",
+                              "letterSpacing": 0.8
+                            },
+                            {
+                              "type": "text",
+                              "id": "HjBO8",
+                              "name": "Telemetry speed L",
+                              "fill": "$text-primary",
+                              "content": "+136",
+                              "fontFamily": "$font-mono",
+                              "fontSize": 20,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "h05mj",
+                          "name": "Telemetry bar L",
+                          "width": "fill_container",
+                          "gap": 2,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "get0W",
+                              "name": "Telemetry segment L 1",
+                              "width": "fill_container",
+                              "height": 8,
+                              "fill": "$wheel-left",
+                              "cornerRadius": 2
+                            },
+                            {
+                              "type": "frame",
+                              "id": "Oc9oK",
+                              "name": "Telemetry segment L 2",
+                              "width": "fill_container",
+                              "height": 8,
+                              "fill": "$wheel-left",
+                              "cornerRadius": 2
+                            },
+                            {
+                              "type": "frame",
+                              "id": "LFW9C",
+                              "name": "Telemetry segment L 3",
+                              "width": "fill_container",
+                              "height": 8,
+                              "fill": "$wheel-left",
+                              "cornerRadius": 2
+                            },
+                            {
+                              "type": "frame",
+                              "id": "Y5omUU",
+                              "name": "Telemetry segment L 4",
+                              "width": "fill_container",
+                              "height": 8,
+                              "fill": "$wheel-left",
+                              "cornerRadius": 2
+                            },
+                            {
+                              "type": "frame",
+                              "id": "tm64d",
+                              "name": "Telemetry segment L 5",
+                              "width": "fill_container",
+                              "height": 8,
+                              "fill": "$wheel-left",
+                              "cornerRadius": 2
+                            },
+                            {
+                              "type": "frame",
+                              "id": "f0VJgq",
+                              "name": "Telemetry segment L 6",
+                              "width": "fill_container",
+                              "height": 8,
+                              "fill": "$wheel-left",
+                              "cornerRadius": 2
+                            },
+                            {
+                              "type": "frame",
+                              "id": "J0EYXn",
+                              "name": "Telemetry segment L 7",
+                              "width": "fill_container",
+                              "height": 8,
+                              "fill": "#1A2621",
+                              "cornerRadius": 2
+                            },
+                            {
+                              "type": "frame",
+                              "id": "SxIUz",
+                              "name": "Telemetry segment L 8",
+                              "width": "fill_container",
+                              "height": 8,
+                              "fill": "#1A2621",
+                              "cornerRadius": 2
+                            },
+                            {
+                              "type": "frame",
+                              "id": "j02dc",
+                              "name": "Telemetry segment L 9",
+                              "width": "fill_container",
+                              "height": 8,
+                              "fill": "#1A2621",
+                              "cornerRadius": 2
+                            },
+                            {
+                              "type": "frame",
+                              "id": "zohT6",
+                              "name": "Telemetry segment L 10",
+                              "width": "fill_container",
+                              "height": 8,
+                              "fill": "#1A2621",
+                              "cornerRadius": 2
+                            },
+                            {
+                              "type": "frame",
+                              "id": "DY7XD",
+                              "name": "Telemetry segment L 11",
+                              "width": "fill_container",
+                              "height": 8,
+                              "fill": "#1A2621",
+                              "cornerRadius": 2
+                            },
+                            {
+                              "type": "frame",
+                              "id": "xzNUS",
+                              "name": "Telemetry segment L 12",
+                              "width": "fill_container",
+                              "height": 8,
+                              "fill": "#1A2621",
+                              "cornerRadius": 2
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "id": "TBROc",
+                          "name": "Telemetry detail L",
+                          "fill": "$text-muted",
+                          "content": "ADELANTE · idx 84% · med 31%",
+                          "fontFamily": "$font-mono",
+                          "fontSize": 7.5,
+                          "fontWeight": "normal",
+                          "letterSpacing": 0.3
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "k0nK0",
+                      "name": "Telemetry wheel R",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 4,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "VUDPK",
+                          "name": "Telemetry top R",
+                          "width": "fill_container",
+                          "justifyContent": "space_between",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "tcTtU",
+                              "name": "Telemetry label R",
+                              "fill": "$accent",
+                              "content": "RUEDA R",
+                              "fontFamily": "$font-mono",
+                              "fontSize": 9,
+                              "fontWeight": "normal",
+                              "letterSpacing": 0.8
+                            },
+                            {
+                              "type": "text",
+                              "id": "UtFET",
+                              "name": "Telemetry speed R",
+                              "fill": "$text-primary",
+                              "content": "+84",
+                              "fontFamily": "$font-mono",
+                              "fontSize": 20,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "bP5R3",
+                          "name": "Telemetry bar R",
+                          "width": "fill_container",
+                          "gap": 2,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "PSEcz",
+                              "name": "Telemetry segment R 1",
+                              "width": "fill_container",
+                              "height": 8,
+                              "fill": "$accent",
+                              "cornerRadius": 2
+                            },
+                            {
+                              "type": "frame",
+                              "id": "i4OnTG",
+                              "name": "Telemetry segment R 2",
+                              "width": "fill_container",
+                              "height": 8,
+                              "fill": "$accent",
+                              "cornerRadius": 2
+                            },
+                            {
+                              "type": "frame",
+                              "id": "Ntfbz",
+                              "name": "Telemetry segment R 3",
+                              "width": "fill_container",
+                              "height": 8,
+                              "fill": "$accent",
+                              "cornerRadius": 2
+                            },
+                            {
+                              "type": "frame",
+                              "id": "iES0U",
+                              "name": "Telemetry segment R 4",
+                              "width": "fill_container",
+                              "height": 8,
+                              "fill": "$accent",
+                              "cornerRadius": 2
+                            },
+                            {
+                              "type": "frame",
+                              "id": "w98C9",
+                              "name": "Telemetry segment R 5",
+                              "width": "fill_container",
+                              "height": 8,
+                              "fill": "#1A2621",
+                              "cornerRadius": 2
+                            },
+                            {
+                              "type": "frame",
+                              "id": "Cak0N",
+                              "name": "Telemetry segment R 6",
+                              "width": "fill_container",
+                              "height": 8,
+                              "fill": "#1A2621",
+                              "cornerRadius": 2
+                            },
+                            {
+                              "type": "frame",
+                              "id": "QUXU1",
+                              "name": "Telemetry segment R 7",
+                              "width": "fill_container",
+                              "height": 8,
+                              "fill": "#1A2621",
+                              "cornerRadius": 2
+                            },
+                            {
+                              "type": "frame",
+                              "id": "VXuQp",
+                              "name": "Telemetry segment R 8",
+                              "width": "fill_container",
+                              "height": 8,
+                              "fill": "#1A2621",
+                              "cornerRadius": 2
+                            },
+                            {
+                              "type": "frame",
+                              "id": "WKwCS",
+                              "name": "Telemetry segment R 9",
+                              "width": "fill_container",
+                              "height": 8,
+                              "fill": "#1A2621",
+                              "cornerRadius": 2
+                            },
+                            {
+                              "type": "frame",
+                              "id": "wHJHs",
+                              "name": "Telemetry segment R 10",
+                              "width": "fill_container",
+                              "height": 8,
+                              "fill": "#1A2621",
+                              "cornerRadius": 2
+                            },
+                            {
+                              "type": "frame",
+                              "id": "glucV",
+                              "name": "Telemetry segment R 11",
+                              "width": "fill_container",
+                              "height": 8,
+                              "fill": "#1A2621",
+                              "cornerRadius": 2
+                            },
+                            {
+                              "type": "frame",
+                              "id": "bZ33K",
+                              "name": "Telemetry segment R 12",
+                              "width": "fill_container",
+                              "height": 8,
+                              "fill": "#1A2621",
+                              "cornerRadius": 2
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "id": "tq2GK",
+                          "name": "Telemetry detail R",
+                          "fill": "$text-muted",
+                          "content": "ADELANTE · idx 67% · med 34%",
+                          "fontFamily": "$font-mono",
+                          "fontSize": 7.5,
+                          "fontWeight": "normal",
+                          "letterSpacing": 0.3
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "Oanzc",
+              "name": "Config sidebar",
+              "width": 380,
+              "height": "fill_container",
+              "layout": "vertical",
+              "gap": 14,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "C5oUo",
+                  "name": "Configuration card",
+                  "width": "fill_container",
+                  "height": "fill_container",
+                  "fill": "$surface",
+                  "cornerRadius": 12,
+                  "stroke": "$border",
+                  "strokeWidth": 1,
+                  "layout": "vertical",
+                  "gap": 10,
+                  "padding": 16,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "mBAIy",
+                      "name": "Config header",
+                      "width": "fill_container",
+                      "justifyContent": "space_between",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "lXd6i",
+                          "name": "Config heading",
+                          "layout": "vertical",
+                          "gap": 2,
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "RHidk",
+                              "name": "Config title",
+                              "fill": "$text-primary",
+                              "content": "Configuración",
+                              "fontFamily": "$font-heading",
+                              "fontSize": 20,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "text",
+                              "id": "D4aG6",
+                              "name": "Config subtitle",
+                              "fill": "$text-secondary",
+                              "content": "Panel de control · cambios en caliente",
+                              "fontFamily": "$font-body",
+                              "fontSize": 10,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "cmILB",
+                          "name": "YAML badge",
+                          "fill": "$accent-dim",
+                          "cornerRadius": 999,
+                          "stroke": "$border-strong",
+                          "strokeWidth": 1,
+                          "gap": 5,
+                          "padding": [
+                            4,
+                            8
+                          ],
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "icon",
+                              "id": "pVbko",
+                              "name": "YAML icon",
+                              "width": 11,
+                              "height": 11,
+                              "icon": "sliders-horizontal",
+                              "library": "lucide",
+                              "fill": "$accent"
+                            },
+                            {
+                              "type": "text",
+                              "id": "KSx1T",
+                              "name": "YAML label",
+                              "fill": "$accent",
+                              "content": "YAML",
+                              "fontFamily": "$font-mono",
+                              "fontSize": 8,
+                              "fontWeight": "normal",
+                              "letterSpacing": 0.6
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "PKjrW",
+                      "name": "Config intro",
+                      "fill": "$text-muted",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "Edita los valores y pulsa Guardar. Se escriben en config/settings.yaml y config/gestures.yaml.",
+                      "lineHeight": 1.35,
+                      "fontFamily": "$font-body",
+                      "fontSize": 10.5,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "rectangle",
+                      "id": "c11lPE",
+                      "name": "Config divider",
+                      "fill": "$border",
+                      "width": "fill_container",
+                      "height": 1
+                    },
+                    {
+                      "type": "frame",
+                      "id": "sR2Hg",
+                      "name": "CALIBRACIÓN GESTUAL header",
+                      "width": "fill_container",
+                      "justifyContent": "space_between",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "BHLK7",
+                          "name": "CALIBRACIÓN GESTUAL label",
+                          "fill": "$text-secondary",
+                          "content": "CALIBRACIÓN GESTUAL",
+                          "fontFamily": "$font-mono",
+                          "fontSize": 9,
+                          "fontWeight": "normal",
+                          "letterSpacing": 1.1
+                        },
+                        {
+                          "type": "text",
+                          "id": "WmoZb",
+                          "name": "CALIBRACIÓN GESTUAL hint",
+                          "fill": "$text-muted",
+                          "content": "gestures.yaml",
+                          "fontFamily": "$font-mono",
+                          "fontSize": 7.5,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "bI6NF",
+                      "name": "Calibration fields",
+                      "width": "fill_container",
+                      "gap": 12,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "Wq7UK",
+                          "name": "Field CURL LO",
+                          "width": "fill_container",
+                          "layout": "vertical",
+                          "gap": 5,
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "a1Cu0",
+                              "name": "Field label CURL LO",
+                              "fill": "$text-muted",
+                              "content": "curl_lo",
+                              "fontFamily": "$font-mono",
+                              "fontSize": 8,
+                              "fontWeight": "normal",
+                              "letterSpacing": 0.6
+                            },
+                            {
+                              "type": "frame",
+                              "id": "dGhAb",
+                              "name": "Input CURL LO",
+                              "width": "fill_container",
+                              "height": 36,
+                              "fill": "#080D0B",
+                              "cornerRadius": 8,
+                              "stroke": "$border-strong",
+                              "strokeWidth": 1,
+                              "padding": [
+                                0,
+                                11
+                              ],
+                              "justifyContent": "space_between",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "HiX5r",
+                                  "name": "Input value CURL LO",
+                                  "fill": "$text-primary",
+                                  "content": "0.30",
+                                  "fontFamily": "$font-mono",
+                                  "fontSize": 12,
+                                  "fontWeight": "normal"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "wC9UR",
+                                  "name": "Input unit CURL LO",
+                                  "fill": "$text-muted",
+                                  "content": "0–1",
+                                  "fontFamily": "$font-mono",
+                                  "fontSize": 8,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "Pok3E",
+                          "name": "Field CURL HI",
+                          "width": "fill_container",
+                          "layout": "vertical",
+                          "gap": 5,
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "BRpkk",
+                              "name": "Field label CURL HI",
+                              "fill": "$text-muted",
+                              "content": "curl_hi",
+                              "fontFamily": "$font-mono",
+                              "fontSize": 8,
+                              "fontWeight": "normal",
+                              "letterSpacing": 0.6
+                            },
+                            {
+                              "type": "frame",
+                              "id": "EHiKc",
+                              "name": "Input CURL HI",
+                              "width": "fill_container",
+                              "height": 36,
+                              "fill": "#080D0B",
+                              "cornerRadius": 8,
+                              "stroke": "$border-strong",
+                              "strokeWidth": 1,
+                              "padding": [
+                                0,
+                                11
+                              ],
+                              "justifyContent": "space_between",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "sCMwQ",
+                                  "name": "Input value CURL HI",
+                                  "fill": "$text-primary",
+                                  "content": "0.97",
+                                  "fontFamily": "$font-mono",
+                                  "fontSize": 12,
+                                  "fontWeight": "normal"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "k0cUe",
+                                  "name": "Input unit CURL HI",
+                                  "fill": "$text-muted",
+                                  "content": "0–1",
+                                  "fontFamily": "$font-mono",
+                                  "fontSize": 8,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "lnrwF",
+                      "name": "Calibration note",
+                      "fill": "$text-muted",
+                      "content": "Rectitud que mapea a 0 % y 100 % de extensión.",
+                      "fontFamily": "$font-body",
+                      "fontSize": 9.5,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "rectangle",
+                      "id": "mEXi7",
+                      "name": "Config divider",
+                      "fill": "$border",
+                      "width": "fill_container",
+                      "height": 1
+                    },
+                    {
+                      "type": "frame",
+                      "id": "DrAH8",
+                      "name": "MODO DE CONTROL header",
+                      "width": "fill_container",
+                      "justifyContent": "space_between",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "vNanq",
+                          "name": "MODO DE CONTROL label",
+                          "fill": "$text-secondary",
+                          "content": "MODO DE CONTROL",
+                          "fontFamily": "$font-mono",
+                          "fontSize": 9,
+                          "fontWeight": "normal",
+                          "letterSpacing": 1.1
+                        },
+                        {
+                          "type": "text",
+                          "id": "QkyXK",
+                          "name": "MODO DE CONTROL hint",
+                          "fill": "$text-muted",
+                          "content": "control_mode",
+                          "fontFamily": "$font-mono",
+                          "fontSize": 7.5,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "fo0BW",
+                      "name": "Control mode",
+                      "width": "fill_container",
+                      "height": 36,
+                      "fill": "#080D0B",
+                      "cornerRadius": 8,
+                      "stroke": "$border-strong",
+                      "strokeWidth": 1,
+                      "gap": 3,
+                      "padding": 3,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "xh33g",
+                          "name": "Mode OWN",
+                          "width": "fill_container",
+                          "height": "fill_container",
+                          "fill": "$accent-dim",
+                          "cornerRadius": 6,
+                          "stroke": "$border-strong",
+                          "strokeWidth": 1,
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "HqxMj",
+                              "name": "Mode label OWN",
+                              "fill": "$accent",
+                              "content": "OWN",
+                              "fontFamily": "$font-mono",
+                              "fontSize": 9,
+                              "fontWeight": "normal",
+                              "letterSpacing": 0.8
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "Pxqgz",
+                          "name": "Mode BOTH",
+                          "width": "fill_container",
+                          "height": "fill_container",
+                          "fill": "#111B1700",
+                          "cornerRadius": 6,
+                          "stroke": "#111B1700",
+                          "strokeWidth": 1,
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "KolEz",
+                              "name": "Mode label BOTH",
+                              "fill": "$text-muted",
+                              "content": "BOTH",
+                              "fontFamily": "$font-mono",
+                              "fontSize": 9,
+                              "fontWeight": "normal",
+                              "letterSpacing": 0.8
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "ZX1US",
+                      "name": "Mode note",
+                      "fill": "$text-muted",
+                      "content": "own: cada mano mueve su rueda · both: una mano mueve las dos.",
+                      "fontFamily": "$font-body",
+                      "fontSize": 9.5,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "rectangle",
+                      "id": "B7msl",
+                      "name": "Config divider",
+                      "fill": "$border",
+                      "width": "fill_container",
+                      "height": 1
+                    },
+                    {
+                      "type": "frame",
+                      "id": "ZVEh2",
+                      "name": "BLUETOOTH header",
+                      "width": "fill_container",
+                      "justifyContent": "space_between",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "J76w2y",
+                          "name": "BLUETOOTH label",
+                          "fill": "$text-secondary",
+                          "content": "BLUETOOTH",
+                          "fontFamily": "$font-mono",
+                          "fontSize": 9,
+                          "fontWeight": "normal",
+                          "letterSpacing": 1.1
+                        },
+                        {
+                          "type": "text",
+                          "id": "C7Xaq",
+                          "name": "BLUETOOTH hint",
+                          "fill": "$text-muted",
+                          "content": "settings.yaml",
+                          "fontFamily": "$font-mono",
+                          "fontSize": 7.5,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "TahiM",
+                      "name": "Field DISPOSITIVO BLE",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 5,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "ZM4UP",
+                          "name": "Field label DISPOSITIVO BLE",
+                          "fill": "$text-muted",
+                          "content": "DISPOSITIVO BLE",
+                          "fontFamily": "$font-mono",
+                          "fontSize": 8,
+                          "fontWeight": "normal",
+                          "letterSpacing": 0.6
+                        },
+                        {
+                          "type": "frame",
+                          "id": "Rv8pw",
+                          "name": "Input DISPOSITIVO BLE",
+                          "width": "fill_container",
+                          "height": 36,
+                          "fill": "#080D0B",
+                          "cornerRadius": 8,
+                          "stroke": "$border-strong",
+                          "strokeWidth": 1,
+                          "padding": [
+                            0,
+                            11
+                          ],
+                          "justifyContent": "space_between",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "C9G9tE",
+                              "name": "Input value DISPOSITIVO BLE",
+                              "fill": "$text-primary",
+                              "content": "BBC micro:bit",
+                              "fontFamily": "$font-mono",
+                              "fontSize": 12,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "text",
+                              "id": "x6UQgW",
+                              "name": "Input unit DISPOSITIVO BLE",
+                              "fill": "$text-muted",
+                              "content": "device_name",
+                              "fontFamily": "$font-mono",
+                              "fontSize": 8,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "pHWdA",
+                      "name": "Field DIRECCIÓN MAC",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 5,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "N7XmZ",
+                          "name": "Field label DIRECCIÓN MAC",
+                          "fill": "$text-muted",
+                          "content": "DIRECCIÓN MAC",
+                          "fontFamily": "$font-mono",
+                          "fontSize": 8,
+                          "fontWeight": "normal",
+                          "letterSpacing": 0.6
+                        },
+                        {
+                          "type": "frame",
+                          "id": "TNjcG",
+                          "name": "Input DIRECCIÓN MAC",
+                          "width": "fill_container",
+                          "height": 36,
+                          "fill": "#080D0B",
+                          "cornerRadius": 8,
+                          "stroke": "$border-strong",
+                          "strokeWidth": 1,
+                          "padding": [
+                            0,
+                            11
+                          ],
+                          "justifyContent": "space_between",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "GJhuF",
+                              "name": "Input value DIRECCIÓN MAC",
+                              "fill": "$text-primary",
+                              "content": "E0:BE:3F:2E:C9:8A",
+                              "fontFamily": "$font-mono",
+                              "fontSize": 12,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "text",
+                              "id": "KOuNZ",
+                              "name": "Input unit DIRECCIÓN MAC",
+                              "fill": "$text-muted",
+                              "content": "address",
+                              "fontFamily": "$font-mono",
+                              "fontSize": 8,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "MK1IB",
+                      "name": "BLE note",
+                      "fill": "$text-muted",
+                      "content": "El nombre tiene prioridad; déjalo vacío para usar la MAC.",
+                      "fontFamily": "$font-body",
+                      "fontSize": 9.5,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "rectangle",
+                      "id": "T4Us2T",
+                      "name": "Config divider",
+                      "fill": "$border",
+                      "width": "fill_container",
+                      "height": 1
+                    },
+                    {
+                      "type": "frame",
+                      "id": "Fvzyd",
+                      "name": "Camera mirror row",
+                      "width": "fill_container",
+                      "justifyContent": "space_between",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "LMwNc",
+                          "name": "Camera mirror text",
+                          "layout": "vertical",
+                          "gap": 2,
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "R2Bqc0",
+                              "name": "Camera mirror label",
+                              "fill": "$text-secondary",
+                              "content": "mirror",
+                              "fontFamily": "$font-mono",
+                              "fontSize": 9,
+                              "fontWeight": "normal",
+                              "letterSpacing": 1.1
+                            },
+                            {
+                              "type": "text",
+                              "id": "z142b",
+                              "name": "Camera mirror note",
+                              "fill": "$text-muted",
+                              "content": "Espejo de cámara · voltea antes de inferir",
+                              "fontFamily": "$font-body",
+                              "fontSize": 9.5,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "quP86",
+                          "name": "Mirror toggle row",
+                          "gap": 7,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "SubzG",
+                              "name": "Mirror state",
+                              "fill": "$accent",
+                              "content": "ON",
+                              "fontFamily": "$font-mono",
+                              "fontSize": 8,
+                              "fontWeight": "normal",
+                              "letterSpacing": 0.6
+                            },
+                            {
+                              "type": "frame",
+                              "id": "WHOfy",
+                              "name": "Mirror toggle",
+                              "width": 42,
+                              "height": 24,
+                              "fill": "$accent-dim",
+                              "cornerRadius": 999,
+                              "stroke": "$accent",
+                              "strokeWidth": 1,
+                              "padding": 3,
+                              "justifyContent": "end",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "ellipse",
+                                  "id": "wevBI",
+                                  "name": "Mirror knob",
+                                  "fill": "$accent",
+                                  "width": 16,
+                                  "height": 16
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "M9O2Sr",
+                      "name": "Config spacer",
+                      "width": "fill_container",
+                      "height": "fill_container"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "e5IZv",
+                      "name": "Config footer",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 9,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "cTZh9",
+                          "name": "Config status",
+                          "width": "fill_container",
+                          "justifyContent": "space_between",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "n6e7y",
+                              "name": "Config status left",
+                              "gap": 6,
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "ellipse",
+                                  "id": "B1c53",
+                                  "name": "Config status dot",
+                                  "fill": "$accent",
+                                  "width": 6,
+                                  "height": 6
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "vVpHz",
+                                  "name": "Config status text",
+                                  "fill": "$text-muted",
+                                  "content": "SINCRONIZADO CON YAML",
+                                  "fontFamily": "$font-mono",
+                                  "fontSize": 8,
+                                  "fontWeight": "normal",
+                                  "letterSpacing": 0.4
+                                }
+                              ]
+                            },
+                            {
+                              "type": "text",
+                              "id": "p6uQF",
+                              "name": "Config version",
+                              "fill": "$text-muted",
+                              "content": "v2",
+                              "fontFamily": "$font-mono",
+                              "fontSize": 8,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "gDxFV",
+                          "name": "Save configuration button",
+                          "width": "fill_container",
+                          "height": 42,
+                          "fill": "$accent",
+                          "cornerRadius": 8,
+                          "gap": 8,
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "icon",
+                              "id": "aXsa4",
+                              "name": "Save icon",
+                              "width": 15,
+                              "height": 15,
+                              "icon": "save",
+                              "library": "lucide",
+                              "fill": "#080C0A"
+                            },
+                            {
+                              "type": "text",
+                              "id": "lbRR0",
+                              "name": "Save label",
+                              "fill": "#080C0A",
+                              "content": "Guardar Configuración",
+                              "fontFamily": "$font-body",
+                              "fontSize": 12,
+                              "fontWeight": "600"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "id": "LXvMg",
+                          "name": "Config footer note",
+                          "fill": "$text-muted",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Los cambios se aplican al instante. Si cambia la MAC, BLE se reconecta.",
+                          "lineHeight": 1.3,
+                          "fontFamily": "$font-body",
+                          "fontSize": 9,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
     }
   ],
   "themes": {

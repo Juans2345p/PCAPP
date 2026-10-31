@@ -20,7 +20,7 @@ class FrameGrabber(threading.Thread):
         self._lock = threading.Lock()
         self._frame: np.ndarray | None = None
         self._seq = 0
-        self._stop = threading.Event()
+        self._stop_event = threading.Event()
         self.fps = 0.0
 
     @staticmethod
@@ -42,7 +42,7 @@ class FrameGrabber(threading.Thread):
     def run(self) -> None:
         previous = time.monotonic()
         frames = 0
-        while not self._stop.is_set():
+        while not self._stop_event.is_set():
             ok, frame = self._cap.read()
             if not ok:
                 time.sleep(0.01)
@@ -61,4 +61,4 @@ class FrameGrabber(threading.Thread):
             return self._frame, self._seq
 
     def stop(self) -> None:
-        self._stop.set()
+        self._stop_event.set()

@@ -16,6 +16,7 @@ class PreviewWindow:
 
     def __init__(self, title: str = WINDOW) -> None:
         self._title = title
+        cv2.namedWindow(self._title, cv2.WINDOW_NORMAL)  # permite redimensionar
 
     def show(self, frame: np.ndarray) -> int:
         """Muestra el frame y devuelve la tecla pulsada (0xFF si no hay)."""

@@ -15,7 +15,7 @@ tocar el mismo archivo y arrastraba dependencias de hardware.
 | **O**pen/Closed | `ICommandSender` permite añadir transportes (BLE, dry-run, mocks) sin modificar `CarController`. `IGestureRecognizer` permite sustituir MediaPipe. |
 | **L**iskov | `DryRunCommandSender` y `BleUartSender` cumplen el mismo contrato observable (`connected`, `sent`, `dropped`, `last_error`, `send`, `close`). |
 | **I**nterface Segregation | Contratos pequeños y específicos: reconocer manos y enviar mensajes, nada más. |
-| **D**ependency Inversion | `CarController` depende de `IGestureRecognizer`/`ICommandSender` y de entidades del dominio, no de MediaPipe ni bleak. |
+| **D**ependency Inversion | `CarController` depende de `IGestureRecognizer`/`ICommandSender` y de entidades del dominio, no de MediaPipe ni bleak. `ConfigurationPanelController` depende de `IConfigStore`, no de YAML directamente. |
 
 ## Correspondencia con el código original
 
@@ -32,6 +32,8 @@ tocar el mismo archivo y arrastraba dependencias de hardware.
 | `render` / `draw_hand` | `pc_app/presentation/overlay.py` |
 | `asyncio` loop / `run` | `pc_app/application/car_controller.py` + `pc_app/main.py` |
 | `main.py` | Lanzador compatible que delega en `pc_app.main.main` |
+| — | `pc_app/infrastructure/config_store.py` (persistencia del panel) |
+| — | `pc_app/application/config_panel.py` (eventos de Configuración) |
 
 ## Comportamiento preservado
 

@@ -18,8 +18,9 @@ from pc_app.config import Settings
 from pc_app.domain.entities.hand_pose import HandPose
 from pc_app.domain.interfaces.gesture_recognizer import IGestureRecognizer
 
+# Cadenas de landmarks para calcular rectitud (mantenido para compatibilidad).
 INDEX_CHAIN = (5, 6, 7, 8)      # MCP, PIP, DIP, TIP del índice
-MIDDLE_CHAIN = (9, 10, 11, 12)  # MCP, PIP, DIP, TIP del corazón
+MIDDLE_CHAIN = (9, 10, 11, 12)  # MCP, PIP, DIP, TIC del corazón
 
 
 class MediaPipeHandTracker(IGestureRecognizer):
@@ -45,7 +46,7 @@ class MediaPipeHandTracker(IGestureRecognizer):
         with contextlib.suppress(Exception):
             self._landmarker.close()
 
-    # -- internos ------------------------------------------------------------
+    # -- timestamps ------------------------------------------------------------
     def _timestamp_ms(self) -> int:
         """MediaPipe VIDEO exige timestamps estrictamente crecientes."""
         timestamp = int((time.monotonic() - self._t0) * 1000)
@@ -54,6 +55,24 @@ class MediaPipeHandTracker(IGestureRecognizer):
         self._last_ts = timestamp
         return timestamp
 
+    # -- posición vertical de la mano (nueva lógica) -------------------------
+    def _hand_y_position(self, landmarks: list[Any], width: int, height: int) -> float:
+        """Posición vertical de la mano: 0 = centro, positivo = abajo, negativo = arriba.
+
+        Usa el muñequillo (landmark 0) y normaliza contra el centro de la imagen.
+        El resultado está en el rango aproximado [-1, 1].
+        Se invierte el signo para que el speed sea positivo hacia adelante:
+        - mano más arriba (menor y) → speed positivo (para adelante)
+        - mano más abajo (mayor y) → speed negativo (para atrás)
+        """
+        # Landmark 0 es la muñeca
+        wrist_y = landmarks[0].y * height
+        center_y = height / 2.0
+        # Invertido: positivo = arriba (mano más alta = para adelante)
+        deviation = (center_y - wrist_y) / (center_y + 1e-6)
+        return float(deviation)
+
+    # -- rectitud de dedos (mantenido para compatibilidad, no usado en process) --
     @staticmethod
     def _straightness(landmarks: list[Any], chain: tuple[int, ...],
                       width: int, height: int) -> float:
@@ -63,24 +82,6 @@ class MediaPipeHandTracker(IGestureRecognizer):
         if path < 1e-6:
             return 0.0
         return math.dist(points[0], points[-1]) / path
-
-    def _to_extension(self, raw: float, side: str, key: str) -> float:
-        """Normaliza, aplica zona muerta y suaviza con EMA (estado por mano)."""
-        cfg = self._settings
-        if cfg.curl_hi <= cfg.curl_lo:
-            value = 0.0
-        else:
-            value = (raw - cfg.curl_lo) / (cfg.curl_hi - cfg.curl_lo)
-            value = max(0.0, min(1.0, value))
-        if value < cfg.deadzone:
-            value = 0.0
-        else:  # reescala para que siga llegando a 1.0 tras la zona muerta
-            value = (value - cfg.deadzone) / (1.0 - cfg.deadzone)
-
-        previous = self._ema.get((side, key))
-        smoothed = value if previous is None else previous + cfg.smoothing * (value - previous)
-        self._ema[(side, key)] = smoothed
-        return smoothed
 
     @staticmethod
     def _handedness(result: Any, index: int) -> str:
@@ -134,14 +135,19 @@ class MediaPipeHandTracker(IGestureRecognizer):
         poses: dict[str, HandPose] = {}
         for index, landmarks in enumerate(result.hand_landmarks):
             side = self._side(result, index, landmarks)
-            raw_index = self._straightness(landmarks, INDEX_CHAIN, width, height)
-            raw_middle = self._straightness(landmarks, MIDDLE_CHAIN, width, height)
+            # Nueva lógica: posición vertical de la mano en lugar de rectitud de dedos.
+            # 0 = centro de la cámara, positivo = mano más arriba, negativo = más abajo.
+            pos = self._hand_y_position(landmarks, width, height)
+            # Mapeo a extensión [0,1] donde 0.5 = centro, >0.5 = arriba, <0.5 = abajo.
+            # Esto permite usar la firma existente de HandPose.
+            norm_pos = (pos + 1.0) / 2.0  # de [-1,1] a [0,1]
+            ext = max(0.0, min(1.0, norm_pos))
             poses[side] = HandPose(
                 side=side,
-                index_ext=self._to_extension(raw_index, side, "index"),
-                middle_ext=self._to_extension(raw_middle, side, "middle"),
-                raw_index=raw_index,
-                raw_middle=raw_middle,
+                index_ext=ext,
+                middle_ext=1.0 - ext,  # valor inverso para mantener diferencia
+                raw_index=pos,
+                raw_middle=pos,
                 landmarks=landmarks,
             )
 

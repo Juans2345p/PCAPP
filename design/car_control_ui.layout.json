@@ -1,0 +1,255 @@
+{
+  "version": 1,
+  "source": {
+    "pen": "design/car_control_ui.pen",
+    "screens": {
+      "live": "kdSb7",
+      "settings": "vSiOG"
+    },
+    "exported_with": "pencil MCP · Get / GetVariables",
+    "note": "El archivo .pen está cifrado. Este descriptor es la estructura runtime exportada desde el diseño y la consume pc_app/infrastructure/pen_ui_loader.py."
+  },
+  "theme": {
+    "mode": "dark",
+    "window": {
+      "width": 1440,
+      "height": 900,
+      "top_bar_height": 64,
+      "sidebar_width": 380
+    },
+</rfl:parameter>
+    "colors": {
+      "bg": "#0A1A12",
+      "surface": "#0F2418",
+      "surface-raised": "#163020",
+      "border": "#1F3D2A",
+      "border-strong": "#2A5238",
+      "text-primary": "#F2F7F4",
+      "text-secondary": "#A9BDB4",
+      "text-muted": "#6F857C",
+      "accent": "#00C853",
+      "accent-dim": "#003F20",
+      "wheel-left": "#FFD200",
+      "wheel-right": "#00C853",
+      "danger": "#FF5252",
+      "input": "#080D0B",
+      "on-accent": "#080C0A",
+      "segment-off": "#1A2621"
+    },
+    "fonts": {
+      "heading": "Space Grotesk",
+      "body": "Inter",
+      "mono": "IBM Plex Mono"
+    }
+  },
+  "live": {
+    "screen_id": "kdSb7",
+    "title": "Control gestual · Carrito micro:bit",
+    "tab": "EN VIVO",
+    "brand": {
+      "mark": "G",
+      "name": "GESTO",
+      "sub": "CAR CONTROL"
+    },
+    "video": {
+      "badge": "EN VIVO",
+      "source": "CAM 0 · 640 × 480",
+      "tracking": "SEGUIMIENTO DE 21 PUNTOS",
+      "mirror_hint": "h: invertir manos"
+    },
+    "telemetry": {
+      "title": "TELEMETRÍA",
+      "subtitle": "RUEDAS L / R",
+      "segments": 12,
+      "wheels": [
+        {
+          "side": "L",
+          "label": "RUEDA L",
+          "color": "wheel-left"
+        },
+        {
+          "side": "R",
+          "label": "RUEDA R",
+          "color": "wheel-right"
+        }
+      ]
+    },
+    "ble": {
+      "title": "ENLACE BLE",
+      "connected": "BLE CONECTADO",
+      "reconnecting": "BLE RECONECTANDO",
+      "dry_run": "BLE DRY-RUN",
+      "device": "BBC micro:bit",
+      "address": "E0:BE:3F:2E:C9:8A"
+    },
+    "metrics": [
+      {
+        "key": "sent",
+        "label": "ESCRITURAS"
+      },
+      {
+        "key": "dropped",
+        "label": "DESCARTES"
+      },
+      {
+        "key": "fps",
+        "label": "FPS"
+      }
+    ],
+    "legend": [
+      {
+        "finger": "ÍNDICE",
+        "action": "Avanzar"
+      },
+      {
+        "finger": "MEDIO",
+        "action": "Retroceder"
+      },
+      {
+        "finger": "PUÑO",
+        "action": "Parar"
+      }
+    ],
+    "command": {
+      "title": "ÚLTIMA ORDEN",
+      "help": "q/ESC salir · h invertir manos"
+    }
+  },
+  "settings": {
+    "screen_id": "vSiOG",
+    "title": "Configuración",
+    "tab": "AJUSTES",
+    "subtitle": "Panel de control · cambios en caliente",
+    "intro": "Edita los valores y pulsa Guardar. Se escriben en config/settings.yaml y config/gestures.yaml.",
+    "badge": "YAML",
+    "sections": [
+      {
+        "key": "calibration",
+        "title": "CALIBRACIÓN GESTUAL",
+        "hint": "gestures.yaml"
+      },
+      {
+        "key": "control",
+        "title": "MODO DE CONTROL",
+        "hint": "control_mode"
+      },
+      {
+        "key": "ble",
+        "title": "BLUETOOTH",
+        "hint": "settings.yaml"
+      }
+    ],
+    "fields": [
+      {
+        "key": "curl_lo",
+        "label": "curl_lo",
+        "kind": "number",
+        "unit": "0–1",
+        "initial": 0.3,
+        "min": 0.0,
+        "max": 1.0,
+        "step": 0.01,
+        "section": "calibration",
+        "file": "config/gestures.yaml",
+        "path": "calibration.curl_lo"
+      },
+      {
+        "key": "curl_hi",
+        "label": "curl_hi",
+        "kind": "number",
+        "unit": "0–1",
+        "initial": 0.97,
+        "min": 0.0,
+        "max": 1.0,
+        "step": 0.01,
+        "section": "calibration",
+        "file": "config/gestures.yaml",
+        "path": "calibration.curl_hi"
+      },
+      {
+        "key": "ble_name",
+        "label": "device_name",
+        "kind": "text",
+        "unit": "device_name",
+        "initial": "BBC micro:bit",
+        "allow_empty": true,
+        "section": "ble",
+        "file": "config/settings.yaml",
+        "path": "ble.device_name"
+      },
+      {
+        "key": "ble_address",
+        "label": "address",
+        "kind": "text",
+        "unit": "address",
+        "initial": "E0:BE:3F:2E:C9:8A",
+        "allow_empty": false,
+        "section": "ble",
+        "file": "config/settings.yaml",
+        "path": "ble.address"
+      },
+      {
+        "key": "mirror",
+        "label": "mirror",
+        "kind": "toggle",
+        "unit": "",
+        "initial": true,
+        "section": "camera",
+        "file": "config/settings.yaml",
+        "path": "camera.mirror"
+      }
+    ],
+    "mode": {
+      "key": "control_mode",
+      "label": "MODO DE CONTROL",
+      "initial": "own",
+      "options": [
+        {
+          "value": "own",
+          "label": "OWN"
+        },
+        {
+          "value": "both",
+          "label": "BOTH"
+        }
+      ],
+      "note": "own: cada mano mueve su rueda · both: una mano mueve las dos."
+    },
+    "notes": {
+      "calibration": "Rectitud que mapea a 0 % y 100 % de extensión.",
+      "ble": "El nombre tiene prioridad; déjalo vacío para usar la MAC.",
+      "mirror": "Espejo de cámara · voltea antes de inferir"
+    },
+    "save": {
+      "label": "Guardar Configuración",
+      "status": "SINCRONIZADO CON YAML",
+      "saved": "GUARDADO EN YAML",
+      "dirty": "CAMBIOS SIN GUARDAR",
+      "footer": "Los cambios se aplican al instante. Si cambia la MAC, BLE se reconecta."
+    }
+  },
+  "calibration": {
+    "tab": "CALIBRACIÓN",
+    "title": "CALIBRACIÓN",
+    "subtitle": "Valores activos · config/gestures.yaml",
+    "note": "La calibración se edita en AJUSTES y se guarda en caliente.",
+    "items": [
+      {
+        "key": "curl_lo",
+        "label": "CURL LO"
+      },
+      {
+        "key": "curl_hi",
+        "label": "CURL HI"
+      },
+      {
+        "key": "smoothing",
+        "label": "EMA"
+      },
+      {
+        "key": "deadzone",
+        "label": "DEADZONE"
+      }
+    ]
+  }
+}

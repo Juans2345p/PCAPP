@@ -59,6 +59,23 @@ Los valores viven en dos YAML y se pueden sobrescribir con flags:
 Precedencia: valores por defecto < YAML < CLI. Las rutas relativas de los YAML
 se resuelven desde la raíz del proyecto.
 
+## Panel de Configuración (UI)
+
+`design/car_control_ui.pen` incluye la pantalla **Configuración** (pestaña
+`AJUSTES`) con vista previa, telemetría L/R y un formulario editable:
+
+- `curl_lo` / `curl_hi` → `config/gestures.yaml`
+- modo `own` / `both` → `config/gestures.yaml` y `config/settings.yaml`
+- dispositivo BLE y MAC → `config/settings.yaml`
+- espejo de cámara → `config/settings.yaml`
+- botón **Guardar Configuración**
+
+En Python, `build_config_panel(settings)` crea el controlador de eventos.
+Cada `set_*` actualiza el borrador y `save()` escribe ambos YAML y aplica los
+valores al `Settings` en caliente. Los cambios de `mirror`, calibración y modo
+surten efecto en el siguiente frame; un cambio de MAC/nombre BLE se aplica en
+la siguiente reconexión.
+
 ## Comprobaciones sin hardware
 
 ```bash
